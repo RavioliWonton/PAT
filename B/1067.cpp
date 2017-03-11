@@ -21,11 +21,11 @@ int main()
 			}
 			else
 			{
-                cout<<"Wrong password: "<<temp<<endl;
-                continue;
+                		cout<<"Wrong password: "<<temp<<endl;
+                		continue;
 			}
 		}
-		else if(countn = n)
+		else if(countn == n)
 		{
 			if(temp == answer)
 			{
@@ -34,7 +34,7 @@ int main()
 			}
 			else
 			{
-                cout<<"Wrong password: "<<temp<<endl<<"Account locked"<<endl;
+                		cout<<"Wrong password: "<<temp<<endl<<"Account locked"<<endl;
 				break;
 			}
 		}
