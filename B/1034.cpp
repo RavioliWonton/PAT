@@ -1,6 +1,8 @@
+//题目保证正确的输出中没有超过整型范围的整数，可没说计算过程中没有.........
+
 #include <iostream>
 #include <sstream>
-#include <cmath>
+#include <cstdlib>
 using namespace std;
 
 string itos(long long i)
@@ -26,99 +28,30 @@ long long ston(string s)
 
 long long gcd(long long a,long long b)
 {
-    if(a == b) return b;
-    else if(a < b) return gcd(a,b-a);
-    else return gcd(a-b,b);
-}
-
-long long lcm(long long a,long long b)
-{
-    return (a*b)/gcd(a,b);
+    return b == 0 ? a : gcd(b, a % b);
 }
 
 string simplification(long long a,long long b)
 {
     if(!(a*b)) return "0";
-    else if(abs(a) / abs(b))
-    {
-        if(abs(a) % abs(b))
-        {
-            if(a*b > 0) return itos(abs(a)/abs(b))+" "+simplification(abs(a)%abs(b),abs(b));
-            else return "(-"+itos(abs(a)/abs(b))+" "+simplification(abs(a)%abs(b),abs(b))+")";
-        }
-        else
-        {
-            if(a*b > 0) return itos(abs(a)/abs(b));
-            else return "(-"+itos(abs(a)/abs(b))+")";
-        }
-    }
+    else if(abs(a) / abs(b)) return (a*b > 0 ? itos(abs(a)/abs(b))+" "+simplification(abs(a)%abs(b),abs(b)) : "(-"+itos(abs(a)/abs(b))+" "+simplification(abs(a)%abs(b),abs(b))+")");
     else
     {
         long long abgcd = gcd(abs(a),abs(b));
         a /= abgcd;b /= abgcd;
-        if(a*b > 0) return itos(abs(a))+"/"+itos(abs(b));
-        else return "(-"+itos(abs(a))+"/"+itos(abs(b))+")";
+        return (a*b > 0 ? itos(abs(a))+"/"+itos(abs(b)) : "(-"+itos(abs(a))+"/"+itos(abs(b))+")");
     }
-}
-
-long long numerator(string a)
-{
-    return ston(a);
-}
-
-long long denominator(string a)
-{
-    return ston(a.substr(a.find("/") + 1));
-}
-
-string addition(long long a1,long long a2,long long b1,long long b2)
-{
-    if(!a1) return simplification(b1,b2);
-    else if(!b1) return simplification(a1,a2);
-    else
-    {
-        long long common_denominator = lcm(a2,b2);
-        a1 *= common_denominator/a2;b1 *= common_denominator/b2;
-        long long result_numerator = (a1 + b1) / gcd(abs(a1 + b1),abs(common_denominator));
-        long long result_denominator = common_denominator / gcd(abs(a1 + b1),abs(common_denominator));
-        return simplification(result_numerator,result_denominator);
-    }
-}
-
-string subtraction(long long a1,long long a2,long long b1,long long b2)
-{
-    if(!a1) return simplification(-b1,-b2);
-    else if(!b1) return simplification(a1,a2);
-    else
-    {
-        long long common_denominator = lcm(a2,b2);
-        a1 *= common_denominator/a2;b1 *= common_denominator/b2;
-        long long result_numerator = (a1 - b1) / gcd(abs(a1 - b1),abs(common_denominator));
-        long long result_denominator = common_denominator / gcd(abs(a1 - b1),abs(common_denominator));
-        return simplification(result_numerator,result_denominator);
-    }
-}
-
-string multiplication(long long a1,long long a2,long long b1,long long b2)
-{
-    return simplification(a1*b1,a2*b2);
-}
-
-string division(long long a1,long long a2,long long b1,long long b2)
-{
-    if(!b1) return "Inf";
-    else return simplification(a1*b2,a2*b1);
 }
 
 int main()
 {
-    string a,b;
-    cin>>a>>b;
-    long long a1 = numerator(a);long long a2 = denominator(a);
-    long long b1 = numerator(b);long long b2 = denominator(b);
+	string a,b;
+	cin>>a>>b;
+    long long a1 = ston(a);long long a2 = ston(a.substr(a.find("/") + 1));
+    long long b1 = ston(b);long long b2 = ston(b.substr(b.find("/") + 1));
     string as = simplification(a1,a2);string bs = simplification(b1,b2);
-    cout<<as<<" + "<<bs<<" = "<<addition(a1,a2,b1,b2)<<endl;
-    cout<<as<<" - "<<bs<<" = "<<subtraction(a1,a2,b1,b2)<<endl;
-    cout<<as<<" * "<<bs<<" = "<<multiplication(a1,a2,b1,b2)<<endl;
-    cout<<as<<" / "<<bs<<" = "<<division(a1,a2,b1,b2)<<endl;
+    cout<<as<<" + "<<bs<<" = "<<simplification(a1*b2+a2*b1,a2*b2)<<endl;
+    cout<<as<<" - "<<bs<<" = "<<simplification(a1*b2-a2*b1,a2*b2)<<endl;
+    cout<<as<<" * "<<bs<<" = "<<simplification(a1*b1,a2*b2)<<endl;
+    cout<<as<<" / "<<bs<<" = "<<(!b1 ? "Inf" : simplification(a1*b2,a2*b1))<<endl;
 }
