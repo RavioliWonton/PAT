@@ -20,7 +20,7 @@ int main()
             if(flag2)
             {
                 s += n;
-				p[countn] = temp;
+		p[countn] = temp;
                 countn++;
                 cout<<temp<<"\n";
             }
