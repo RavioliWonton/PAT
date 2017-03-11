@@ -34,7 +34,11 @@ long long gcd(long long a,long long b)
 string simplification(long long a,long long b)
 {
     if(!(a*b)) return "0";
-    else if(abs(a) / abs(b)) return (a*b > 0 ? itos(abs(a)/abs(b))+" "+simplification(abs(a)%abs(b),abs(b)) : "(-"+itos(abs(a)/abs(b))+" "+simplification(abs(a)%abs(b),abs(b))+")");
+    else if(abs(a) / abs(b))
+    {
+        if(abs(a) % abs(b)) return (a*b > 0 ? itos(abs(a)/abs(b))+" "+simplification(abs(a)%abs(b),abs(b)) : "(-"+itos(abs(a)/abs(b))+" "+simplification(abs(a)%abs(b),abs(b))+")");
+        else return (a*b > 0 ? itos(abs(a)/abs(b)) : "(-"+itos(abs(a)/abs(b))+")");
+    }
     else
     {
         long long abgcd = gcd(abs(a),abs(b));
