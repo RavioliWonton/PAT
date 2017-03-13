@@ -1,4 +1,4 @@
-//±¾Ìâ²»ÄÜÓÃiostream£¬»á³¬Ê±......
+//æœ¬é¢˜ä¸èƒ½ç”¨iostreamï¼Œä¼šè¶…æ—¶â€¦â€¦
 
 #include <cstdio>
 #include <algorithm>
@@ -28,9 +28,9 @@ void printStudent(Student *p,int n)
 
 int main()
 {
-	int n,l,h,tn,td,tc,countn,p1n,p2n,p3n,p4n;countn = p1n = p2n = p3n = p4n =  0;
-	scanf("%d %d %d",&n,&l,&h);
-	Student (*p1) = new Student[n];Student (*p2) = new Student[n];Student (*p3) = new Student[n];Student (*p4) = new Student[n];
+    int n,l,h,tn,td,tc,countn,p1n,p2n,p3n,p4n;countn = p1n = p2n = p3n = p4n =  0;
+    scanf("%d %d %d",&n,&l,&h);
+    Student (*p1) = new Student[n];Student (*p2) = new Student[n];Student (*p3) = new Student[n];Student (*p4) = new Student[n];
     for(int i = 0;i < n;i++)
     {
         scanf("%d %d %d",&tn,&td,&tc);
