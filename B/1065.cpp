@@ -1,12 +1,10 @@
-//ÒªÓÃÏ¡Êè±í£¬²»È»³¬Ê±¡£
+//è¦ç”¨ç¨€ç–è¡¨ï¼Œä¸ç„¶è¶…æ—¶ã€‚
 
 #include <iostream>
 #include <iomanip>
-#include <functional>
 #include <algorithm>
+#include <vector>
 using namespace std;
-
-
 
 int main()
 {
@@ -14,49 +12,38 @@ int main()
     cin>>n;
     for(int i = 0;i < n;i++)
     {
-        int temp1,temp2;
-        cin>>temp1>>temp2;
-        couple[temp1] = temp2;
-        couple[temp2] = temp1;
+        int bride,bridegroom;
+        cin>>bride>>bridegroom;
+        couple[bride] = bridegroom;
+        couple[bridegroom] = bride;
     }
-    int (*dog) = new int[n];
-    int m,countn;countn = 0;
+    vector<int> people,dog;
+    int m;
     cin>>m;
-    int (*people) = new int[m];
-    for(int i = 0;i < m;i++) cin>>people[i];
     for(int i = 0;i < m;i++)
     {
-        if(!couple[people[i]])
-        {
-            dog[countn] = people[i];
-            countn++;
-        }
-        else
-        {
-            bool flag = false;
-            for(int j = 0;j < m;j++)
-                if(people[j] == couple[people[i]]) {flag = true;break;}
-            if(!flag)
-            {
-                dog[countn] = people[i];
-                countn++;
-            }
-        }
+        int participant;
+        cin>>participant;
+        people.push_back(participant);
     }
-    cout<<countn<<endl;
-    if(countn)
+    for(vector<int>::iterator it = people.begin();it != people.end();it++)
     {
-        sort(dog,dog+countn,less<int>());
-        cout<<setfill('0')<<setw(5)<<dog[0];
-        for(int i = 1; i < countn; i++) cout<<" "<<setfill('0')<<setw(5)<<dog[i];
+        if(find(people.begin(),people.end(),couple[*it]) == people.end())
+            dog.push_back(*it);
+    }
+    cout<<dog.size()<<endl;
+    if(dog.size())
+    {
+        sort(dog.begin(),dog.end());
+        cout<<setfill('0')<<setw(5)<<dog.front();
+        for(vector<int>::iterator it = dog.begin() + 1;it != dog.end();it++) cout<<" "<<setfill('0')<<setw(5)<<*it;
         cout<<endl;
     }
-    delete [] dog;
 }
 
 /*
 
-·ÇÏ¡Êè±í×ö·¨
+éç¨€ç–è¡¨åšæ³•
 
 typedef struct
 {
