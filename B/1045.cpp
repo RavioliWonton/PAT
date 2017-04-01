@@ -1,62 +1,41 @@
 #include <iostream>
-#include <algorithm>
+#include <vector>
+#include <deque>
 using namespace std;
-
-template<typename T>
-void merge_sort_recursive(T arr[], T reg[], int start, int end) {
-	if (start >= end) return;
-	int len = end - start, mid = (len >> 1) + start;
-	int start1 = start, end1 = mid;
-	int start2 = mid + 1, end2 = end;
-	merge_sort_recursive(arr, reg, start1, end1);
-	merge_sort_recursive(arr, reg, start2, end2);
-	int k = start;
-	for (;start1 <= end1 && start2 <= end2;)
-		reg[k++] = arr[start1] < arr[start2] ? arr[start1++] : arr[start2++];
-	for (;start1 <= end1;)
-		reg[k++] = arr[start1++];
-	for (;start2 <= end2;)
-		reg[k++] = arr[start2++];
-	for (k = start; k <= end; k++)
-		arr[k] = reg[k];
-}
-template<typename T>
-void merge_sort(T arr[], const int len) {
-	T reg[len];
-	merge_sort_recursive(arr, reg, 0, len - 1);
-}
-
-
-bool judge(int *p,int n,int i)
-{
-    for(int j = i;j >= 0;j--)
-        if(p[j] > p[i]) return false;
-    for(int j = i;j < n;j++)
-        if(p[j] < p[i]) return false;
-    return true;
-}
 
 int main()
 {
-    int n,countn = 0;
+    int n;
     cin>>n;
-    int (*p) = new int[n];int (*cp) = new int[n];
-    for(int i = 0;i < n;i++) cin>>p[i];
+    vector<int> input,big;
+    int small = 2147483647;int large = 0;
     for(int i = 0;i < n;i++)
     {
-        if(judge(p,n,i))
+        int temp;
+        cin>>temp;
+        input.push_back(temp);
+        big.push_back(large);
+        if(temp > large) large = temp;
+    }
+    deque<int> result;
+    for(int i = n - 1;i >= 0;i--)
+    {
+        if(input[i] < small)
         {
-            cp[countn] = p[i];
-            countn++;
+            small = input[i];
+            if(input[i] > big[i]) result.push_front(input[i]);
         }
     }
-    cout<<countn<<endl;
-    merge_sort(cp,countn);
-    for(int i = 0;i < countn;i++)
+    cout<<result.size()<<endl;
+    bool flag = true;
+    for(deque<int>::iterator it = result.begin();it != result.end();it++)
     {
-        if(!i) cout<<cp[i];
-        else cout<<" "<<cp[i];
+        if(flag)
+        {
+            cout<<*it;
+            flag = false;
+        }
+        else cout<<" "<<*it;
     }
     cout<<endl;
-    delete [] p;delete [] cp;
 }
