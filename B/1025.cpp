@@ -6,56 +6,73 @@
 #include <algorithm>
 using namespace std;
 
-typedef struct {
-	int data;
-	int next;
+typedef struct
+{
+    int data;
+    int next;
 } LNode;
 
 int main()
 {
-	int first,n,k;
-    cin>>first>>n>>k;
+    int flag,n,k;
+    cin>>flag>>n>>k;
     LNode p[100000];
-    for(int i = 0;i < n;i++)
-	{
-		int temp;
-		cin>>temp;
-		cin>>p[temp].data>>p[temp].next;
-	}
-	int (*ap) = new int[n];
+    for(int i = 0; i < n; i++)
+    {
+        int temp;
+        cin>>temp;
+        cin>>p[temp].data>>p[temp].next;
+    }
+    if(flag != -1)
+    {
+    	int (*ap) = new int[n];
 	int (*dp) = new int[n];
-	int flag = first;int countn = 0;
-	for(int i = 0;i < k;i++)
-	{
-		if(flag != -1)
-		{
-			ap[i] = flag;
-			dp[i] = p[flag].data;
-			flag = p[flag].next;
-			countn++;
-		}
-		else break;
-	}
-	reverse(ap,ap+countn);
-	reverse(dp,dp+countn);
-	for(int i = k;i < n;i++)
-	{
-		if(flag != -1)
-		{
-			ap[i] = flag;
-			dp[i] = p[flag].data;
-			flag = p[flag].next;
-			countn++;
-		}
-		else break;
-	}
-	cout.fill('0');
-    for(int i = 0;i < countn;i++)
-	{
-		cout<<setw(5)<<ap[i]<<" ";
-		cout<<dp[i]<<" ";
-		if(i != countn - 1) cout<<setw(5)<<ap[i+1]<<"\n";
-		else cout<<"-1\n";
-	}
-	delete [] ap;delete [] dp;
+	int begin = 0;int end = 0;
+        for(int i = 0; i < n/k; i++)
+        {
+            if(flag != -1)
+            {
+                bool stop = false;
+                for(int j = begin; j < begin+k; j++)
+                {
+                    if(flag != -1)
+                    {
+                        ap[j] = flag;
+                        dp[j] = p[flag].data;
+                        flag = p[flag].next;
+                        end++;
+                    }
+                    else {stop = true;break;}
+                 }
+                if(!stop)
+                {
+                    reverse(ap+begin,ap+end);
+                    reverse(dp+begin,dp+end);
+                    begin = end;
+                }
+            }
+            else break;
+        }
+        for(int i = end; i < n; i++)
+        {
+            if(flag != -1)
+            {
+                ap[i] = flag;
+                dp[i] = p[flag].data;
+                flag = p[flag].next;
+                end++;
+            }
+            else break;
+        }
+        cout.fill('0');
+        for(int i = 0; i < end; i++)
+        {
+            cout<<setw(5)<<ap[i]<<" ";
+            cout<<dp[i]<<" ";
+            if(i != end - 1) cout<<setw(5)<<ap[i+1]<<"\n";
+            else cout<<"-1\n";
+        }
+        delete [] ap;delete [] dp;
+    }
+    else cout<<"-1\n";
 }
