@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include <deque>
 using namespace std;
 
@@ -7,7 +6,7 @@ int main()
 {
     int n;
     cin>>n;
-    vector<int> input,big;
+    deque<int> input,big,result;
     int small = 2147483647;int large = 0;
     for(int i = 0;i < n;i++)
     {
@@ -17,13 +16,12 @@ int main()
         big.push_back(large);
         if(temp > large) large = temp;
     }
-    deque<int> result;
-    for(int i = n - 1;i >= 0;i--)
+    for(deque<int>::reverse_iterator it = input.rbegin();it != input.rend();it++)
     {
-        if(input[i] < small)
+        if(*it < small)
         {
-            small = input[i];
-            if(input[i] > big[i]) result.push_front(input[i]);
+            small = *it;
+            if(*it > *(big.rbegin() + (it - input.rbegin()))) result.push_front(*it);
         }
     }
     cout<<result.size()<<endl;
