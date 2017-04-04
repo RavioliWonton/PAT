@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 #include <deque>
 using namespace std;
 
@@ -7,7 +8,7 @@ int main()
     int n;
     cin>>n;
     deque<int> input,big,result;
-    int small = 2147483647;int large = 0;
+    int small = numeric_limits<int>::max();int large = 0;
     for(int i = 0;i < n;i++)
     {
         int temp;
