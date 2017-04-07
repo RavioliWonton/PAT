@@ -1,5 +1,5 @@
-# PATest
-本人刷的PAT题目代码集........
+# Programming Ability Test Answer Repository
+本人刷的PAT题目答案代码集........
 
 代码原则：尽量做到空间利用优化。
 
