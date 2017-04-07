@@ -1,38 +1,34 @@
 #include <stdexcept>
+#include <algorithm>
 #include <iostream>
 #include <iomanip>
-#include <sstream>
 #include <string>
+#include <cctype>
 using namespace std;
 
 int main()
 {
-	int n;
-	cin>>n;
-	int countn = 0;double sum = 0.0;
-	for(int i = 0;i < n;i++)
+    int n;
+    cin>>n;
+    int countn = 0;double sum = 0.0;
+    for(int i = 0;i < n;i++)
     {
         string temps;
         double tempd;
         cin>>temps;
         bool flag = true;
-        try{tempd = stof(temps);}
+        if(count(temps.begin(),temps.end(),'.') > 1) flag = false;
+        try{tempd = stod(temps);}
         catch(invalid_argument e) {flag = false;}
+        if((temps.end() - find(temps.begin(),temps.end(),'.')) > 3) flag = false;
+        else if((!isdigit(temps.front()) && temps.front() != '-') || (temps.front() == '-' && !isdigit(*(temps.begin()+1)))) flag = false;
         if(flag)
         {
-            stringstream ss;
-            ss << temps;
-            ss >> tempd;
-            ss.clear();
-            ss.str("");
-            if(tempd >= -1000 && tempd <= 1000)
+            tempd = stod(temps);
+            if(tempd >= -1000.00 && tempd <= 1000.00)
             {
-                if(tempd*100 - (int)(tempd*100) == 0)
-                {
-                    sum += tempd;
-                    countn++;
-                }
-                else flag = false;
+                sum += tempd;
+                countn++;
             }
             else flag = false;
         }
