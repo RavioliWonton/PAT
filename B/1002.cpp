@@ -1,8 +1,6 @@
 #include <iostream>
 using namespace std;
 
-int ctoi(char c) {return (int)(c - '0');}
-
 string itos(int i)
 {
 	switch(i)
@@ -18,6 +16,7 @@ string itos(int i)
 		case 8:return "ba";break;
 		case 9:return "jiu";break;
 	}
+	return 0;
 }
 
 int main()
@@ -25,21 +24,20 @@ int main()
 	int sum = 0;
 	char temp;
 	for(;(temp = cin.get()) && (temp != '\n');)
+	{
+		auto ctoi = [](char temp)->int {return temp - '0';};
 		sum += ctoi(temp);
+	}
 	string answer = "";bool flag = true;
     for(;sum > 0;)
 	{
 		if(flag)
 		{
 			answer = itos(sum % 10);
-			sum /= 10;
 			flag = false;
 		}
-		else
-		{
-			answer = itos(sum % 10) + " " + answer;
-			sum /= 10;
-		}
+		else answer = itos(sum % 10) + " " + answer;
+		sum /= 10;
 	}
 	cout<<answer<<endl;
 }
