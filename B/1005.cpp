@@ -7,37 +7,40 @@ typedef struct {
     bool notchecked;
 } number;
 
-bool cmp(number a,number b) {return a.number > b.number;}
-
 int main()
 {
     int n;
     cin>>n;
-    number (*p) = new number[n];
-    for(int i = 0;i < n;i++) {cin>>p[i].number;p[i].notchecked = true;}
-    sort(p,p+n,cmp);
+    vector<number> p;
     for(int i = 0;i < n;i++)
     {
-        if(p[i].notchecked)
+        number temp;
+        cin>>temp.number;
+        temp.notchecked = true;
+        p.push_back(temp);
+    }
+    sort(p.begin(),p.end(),[&](number a,number b){return a.number > b.number;});
+    for(number& it : p)
+    {
+        if(it.notchecked)
         {
-            int temp = p[i].number;
+            int temp = it.number;
             for(;temp != 1;)
             {
                 if(temp % 2) temp = (3*temp+1)/2;
                 else temp /= 2;
-                for(int j = 0;j < n;j ++)
-                    if(temp == p[j].number) p[j].notchecked = false;
+                auto cmp = [&](number t)->bool {return (temp == t.number);};
+                if(find_if(p.begin(),p.end(),cmp) != p.end()) p.at(find_if(p.begin(),p.end(),cmp) - p.begin()).notchecked = false;
             }
         }
     }
     bool flag = true;
-    for(int i = 0;i < n;i++)
+    for(number& it : p)
     {
-        if(p[i].notchecked)
+        if(it.notchecked)
         {
-            if(flag) {cout<<p[i].number;flag = false;}
-            else cout<<" "<<p[i].number;
+            if(flag) {cout<<it.number;flag = false;}
+            else cout<<" "<<it.number;
         }
     }
-    delete [] p;
 }
