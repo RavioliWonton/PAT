@@ -13,12 +13,6 @@ typedef struct {
     int error;
 } topic;
 
-bool cmp(topic a,topic b)
-{
-    if(a.error != b.error) return a.error > b.error;
-    else return a.number < b.number;
-}
-
 int main()
 {
     int n,m;
@@ -51,7 +45,7 @@ int main()
         }
         cout<<grade<<endl;
     }
-    sort(p,p+m,cmp);
+    sort(p,p+m,[](topic a,topic b){if(a.error != b.error) return a.error > b.error;else return a.number < b.number;});
     if(!p[0].error) cout<<"Too simple"<<endl;
     else
     {
