@@ -1,42 +1,40 @@
 #include <iostream>
+#include <algorithm>
 #include <string>
 using namespace std;
-bool isString(string s)
-{
-	for (int i = 0;i < s.length();i++)
-	{
-		if (s[i] != 'P' && s[i] != 'A' && s[i] != 'T')
-			return false;
-	}
-	return true;
-}
+
 bool isPAT(string s)
 {
-	int indexP = s.find('P', 0), indexT = s.find('T', 0), countAbP = 0, countAbPT = 0, countAaT = 0, i;
+	int countAbP = 0, countAbPT = 0, countAaT = 0;
+	string::iterator indexP = find(s.begin(),s.end(),'P');
+	string::iterator indexT = find(s.begin(),s.end(),'T');
 	if (indexP > indexT || indexP + 1 == indexT) return false;
 	else
 	{
-		if (indexP == 0) countAbP = 0;
-		else
+		if (indexP != s.begin())
         {
-            for (i = 0;i < indexP;i++)
-                if (s[i] == 'A') countAbP++;
-                else return 0;
+            for (string::iterator it = s.begin();it != indexP;it++)
+            {
+                if (*it == 'A') countAbP++;
+                else return false;
+            }
         }
-        for (i = indexP+1;i < indexT;i++)
-            if (s[i] == 'A') countAbPT++;
-        	else return 0;
-        if (indexT == s.length()) countAaT = s.length();
-        else
+        for (string::iterator it = indexP + 1;it != indexT;it++)
         {
-            for (i = indexT+1;i < s.length();i++)
-                if (s[i] == 'A') countAaT++;
-                else return 0;
+            if (*it == 'A') countAbPT++;
+        	else return false;
         }
-        if (countAbP*countAbPT == countAaT)
-            return 1;
+        if (indexT != s.end() - 1)
+        {
+            for (string::iterator it = indexT + 1;it != s.end();it++)
+            {
+                if (*it == 'A') countAaT++;
+                else return false;
+            }
+        }
+        if (countAbP*countAbPT == countAaT) return true;
+        else return false;
 	}
-	return 0;
 }
 int main()
 {
@@ -45,9 +43,9 @@ int main()
 	for (;n > 0;n--)
 	{
 		cin >> s;
-		if(isString(s))cout<<"NO"<<endl;
-		else if(isPAT(s))cout<<"YES"<<endl;
+		auto isString = [](string s){if(find_if(s.begin(),s.end(),[](char temp){if(temp != 'P' && temp != 'A' && temp != 'T') return false;else return true;}) != s.end()) return false;else return true;};
+		if(isString(s)) cout<<"NO"<<endl;
+		else if(isPAT(s)) cout<<"YES"<<endl;
 		else cout<<"NO"<<endl;
 	}
-	return 0;
 }
