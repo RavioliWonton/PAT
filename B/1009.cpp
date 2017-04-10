@@ -1,12 +1,12 @@
 #include <iostream>
+#include <vector>
 using namespace std;
+
 int main()
 {
-	string (*p) = new string[80];int countn = 0;
-	for(;cin>>p[countn];) {countn++;}
-	cout<<p[countn - 1];
-    for(int i = countn - 2;i >= 0;i--)
-        cout<<" "<<p[i];
+    vector<string> p;
+    string temp;
+    for(;cin>>temp;) p.push_back(temp);
+    for(vector<string>::reverse_iterator it = p.rbegin();it != p.rend();it++) (it == p.rbegin() ? cout<<*it : cout<<" "<<*it);
     cout<<endl;
-    delete [] p;
 }
