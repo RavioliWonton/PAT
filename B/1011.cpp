@@ -2,27 +2,16 @@
 #include <string>
 using namespace std;
 
-int atoi(char a)
+void append(string& s,int&& length)
 {
-    return (int)(a - 48);
+    int limit = length - s.size();
+    for(int i = 0;i < limit;i++) s.push_back('0');
 }
 
-char itoa(int i)
+bool judgeplus(string& a,string& b,string& c,int control)
 {
-    return (char)(i + 48);
-}
-
-string append(string s,string maxs)
-{
-    string a;
-    for(int i = 0;i < maxs.length() - s.length();i++)
-        a += "0";
-    a += s;
-    return a;
-}
-
-bool judgeplus(string a,string b,string c,int control)
-{
+    auto atoi = [](char a)-> int {return (a - 48);};
+    auto itoa = [](int i)-> char {return (i + 48);};
     string sum(a.length(),0);int carry = 0;
     for(int  i = a.length() - 1;i >= 0;i--)
     {
@@ -36,8 +25,10 @@ bool judgeplus(string a,string b,string c,int control)
     }
 }
 
-bool judgeminus(string a,string b,string c,int control)
+bool judgeminus(string& a,string& b,string& c,int control)
 {
+    auto atoi = [](char a)-> int {return (a - 48);};
+    auto itoa = [](int i)-> char {return (i + 48);};
     string maxs = (a > b ? a : b);string mins = (a < b ? a : b);
     string diff(a.length(),0);const int borrow = 10;
     for(int i = 0;i < a.length();i++)
@@ -57,66 +48,60 @@ int main()
     {
         string a,b,c;bool flag = false;
         cin>>a>>b>>c;
-        if(c[0] == '-')
+        if(c.front() == '-')
         {
-            if(a[0] == '-' && b[0] == '-')
+            if(a.front() == '-' && b.front() == '-')
             {
-                a = a.substr(1,string::npos);
-                b = b.substr(1,string::npos);
-                c = c.substr(1,string::npos);
-                a = append(a,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
-                b = append(b,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
-                c = append(c,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
+                a.erase(0,1);b.erase(0,1);c.erase(0,1);
+                append(a,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
+                append(b,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
+                append(c,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
                 flag =  judgeplus(a,b,c,2);
             }
-            else if(a[0] == '-' && b[0] != '-')
+            else if(a.front() == '-' && b.front() != '-')
             {
-                a = a.substr(1,string::npos);
-                c = c.substr(1,string::npos);
-                a = append(a,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
-                b = append(b,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
-                c = append(c,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
+                a.erase(0,1);c.erase(0,1);
+                append(a,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
+                append(b,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
+                append(c,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
                 flag = judgeminus(a,b,c,2);
             }
-            else if(a[0] != '-' && b[0] == '-')
+            else if(a.front() != '-' && b.front() == '-')
             {
-                b = b.substr(1,string::npos);
-                c = c.substr(1,string::npos);
-                a = append(a,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
-                b = append(b,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
-                c = append(c,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
+                b.erase(0,1);c.erase(0,1);
+                append(a,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
+                append(b,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
+                append(c,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
                 flag = judgeminus(a,b,c,2);
             }
-            else
-                flag = true;
+            else flag = true;
         }
         else
         {
-            if(a[0] != '-' && b[0] != '-')
+            if(a.front() != '-' && b.front() != '-')
             {
-                a = append(a,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
-                b = append(b,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
-                c = append(c,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
+                append(a,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
+                append(b,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
+                append(c,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
                 flag =  judgeplus(a,b,c,1);
             }
-            else if(a[0] == '-' && b[0] != '-')
+            else if(a.front() == '-' && b.front() != '-')
             {
-                a = a.substr(1,string::npos);
-                a = append(a,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
-                b = append(b,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
-                c = append(c,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
+                a.erase(0,1);
+                append(a,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
+                append(b,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
+                append(c,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
                 flag = judgeminus(a,b,c,1);
             }
-            else if(a[0] != '-' && b[0] == '-')
+            else if(a.front() != '-' && b.front() == '-')
             {
-                b = b.substr(1,string::npos);
-                a = append(a,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
-                b = append(b,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
-                c = append(c,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c));
+                b.erase(0,1);
+                append(a,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
+                append(b,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
+                append(c,((a.length() >= b.length() ? a : b).length() >= c.length() ? (a.length() >= b.length() ? a : b) : c).size());
                 flag = judgeminus(a,b,c,1);
             }
         }
-        if(flag) cout<<"Case #"<<i<<": true"<<endl;
-        else cout<<"Case #"<<i<<": false"<<endl;
+        cout<<"Case #"<<i<<": "<<boolalpha<<flag<<endl;
     }
 }
