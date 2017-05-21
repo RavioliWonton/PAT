@@ -9,16 +9,9 @@ int main()
     {
         int request;
         cin>>request;
-        if(request > floor)
-        {
-            time += (request-floor)*6 + 5;
-            floor = request;
-        }
-        else
-        {
-            time += (floor-request)*4 + 5;
-            floor = request;
-        }
+        if(request > floor) time += (request-floor)*6 + 5;
+        else time += (floor-request)*4 + 5;
+        floor = request;
     }
     cout<<time<<endl;
 }
