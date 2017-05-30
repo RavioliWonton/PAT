@@ -26,8 +26,8 @@ int main()
     if(flag != -1)
     {
     	int (*ap) = new int[n];
-	int (*dp) = new int[n];
-	int begin = 0;int end = 0;
+        int (*dp) = new int[n];
+        int begin = 0;int end = 0;
         for(int i = 0; i < n/k; i++)
         {
             if(flag != -1)
