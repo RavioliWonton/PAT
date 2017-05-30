@@ -1,29 +1,38 @@
 //你们火星商店脑子有点问题的！
 
 #include <iostream>
+#include <functional>
 #include <algorithm>
-#include <vector>
+#include <deque>
 using namespace std;
 int main()
 {
-	int nc,np;
-	vector<int> vc,vp;
+	int nc,np,countpn,countnn;
+	countpn = countnn = 0;
+	deque<int> vc,vp;
 	cin>>nc;
 	for(int i = 0;i < nc;i++)
     {
         int temp;
         cin>>temp;
-        vc.push_back(temp);
+        if(temp < 0) {vc.push_back(temp);countnn++;}
+        else {vc.push_front(temp);countpn++;}
     }
-    sort(vc.begin(),vc.end());
+    sort(vc.begin(),vc.begin()+countpn,greater<int>());
+    sort(vc.end()-countnn,vc.end());
+    countpn = countnn = 0;
     cin>>np;
 	for(int i = 0;i < np;i++)
     {
         int temp;
         cin>>temp;
-        vp.push_back(temp);
+        if(temp < 0) {vp.push_back(temp);countnn++;}
+        else {vp.push_front(temp);countpn++;}
     }
-    sort(vp.begin(),vp.end());
+    sort(vp.begin(),vp.begin()+countpn,greater<int>());
+    sort(vp.end()-countnn,vp.end());
+    for(int &n : vc) {cout<<n<<" ";}cout<<endl;
+    for(int &n : vp) {cout<<n<<" ";}cout<<endl;
     long long money = 0;
     bool flag = false;
     for(auto itc = vc.begin(),itp = vp.begin();itc != vc.end() && itp != vp.end();itc++,itp++)
