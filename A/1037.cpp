@@ -19,7 +19,7 @@ int main()
         else {vc.push_front(temp);countpn++;}
     }
     sort(vc.begin(),vc.begin()+countpn,greater<int>());
-    sort(vc.end()-countnn,vc.end());
+    sort(vc.end()-countnn,vc.end(),greater<int>());
     countpn = countnn = 0;
     cin>>np;
 	for(int i = 0;i < np;i++)
@@ -30,9 +30,7 @@ int main()
         else {vp.push_front(temp);countpn++;}
     }
     sort(vp.begin(),vp.begin()+countpn,greater<int>());
-    sort(vp.end()-countnn,vp.end());
-    for(int &n : vc) {cout<<n<<" ";}cout<<endl;
-    for(int &n : vp) {cout<<n<<" ";}cout<<endl;
+    sort(vp.end()-countnn,vp.end(),greater<int>());
     long long money = 0;
     bool flag = false;
     for(auto itc = vc.begin(),itp = vp.begin();itc != vc.end() && itp != vp.end();itc++,itp++)
