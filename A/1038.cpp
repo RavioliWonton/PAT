@@ -14,10 +14,7 @@ int main()
         cin>>tempi;
         if(tempi) v.push_back(to_string(tempi));
     }
-    sort(v.begin(),v.end(),[&](string a,string b)->bool
-         {
-             return a + b < b + a;
-         });
+    sort(v.begin(),v.end(),[&](string a,string b)->bool{return a + b <= b + a;});
     if(v.size())
     {
         for(auto it = v.begin();it != v.end();it++)
