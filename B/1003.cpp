@@ -43,9 +43,7 @@ int main()
 	for (;n > 0;n--)
 	{
 		cin >> s;
-		auto isString = [](string s){if(find_if(s.begin(),s.end(),[](char temp){if(temp != 'P' && temp != 'A' && temp != 'T') return false;else return true;}) != s.end()) return false;else return true;};
-		if(isString(s)) cout<<"NO"<<endl;
-		else if(isPAT(s)) cout<<"YES"<<endl;
+		if(isPAT(s)) cout<<"YES"<<endl;
 		else cout<<"NO"<<endl;
 	}
 }
