@@ -11,14 +11,11 @@ bool isPAT(string s)
 	if (indexP > indexT || indexP + 1 == indexT) return false;
 	else
 	{
-		if (indexP != s.begin())
-        {
             for (string::iterator it = s.begin();it != indexP;it++)
             {
                 if (*it == 'A') countAbP++;
                 else return false;
             }
-        }
         for (string::iterator it = indexP + 1;it != indexT;it++)
         {
             if (*it == 'A') countAbPT++;
