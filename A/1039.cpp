@@ -1,54 +1,60 @@
-#include <algorithm>
+#include <iostream>
 #include <vector>
-#include <cstring>
-#include <cstdio>
+#include <bitset>
+#include <algorithm>
 using namespace std;
 
-typedef struct {
-    char name[5];
-    vector<int> course;
-} student;
+int convert(const string& name)
+{
+    auto f = [&](const char& c)->string{return ((c - '@' < 10) ? ('0' + to_string(c - '@')) : to_string(c - '@'));};
+    return stoi(f(name[0]) + f(name[1]) + f(name[2]) + name[3]);
+}
+
+constexpr int cc(int& i)
+{
+    return i;
+}
 
 int main()
 {
-	int n,k;
-	scanf("%d %d",&n,&k);
-	vector<student> v;
-	for(int i = 0;i < k;i++)
+    int n,k;
+    cin>>n>>k;
+    const int ck = cc(k);
+    bitset<10000000*(ck+1)> b;
+    for(int i = 0;i < k;i++)
     {
-        int c,sn;
-        scanf("%d %d",&c,&sn);
-        for(int j = 0;j < sn;j++)
+        int num,counts;
+        cin>>num>>counts;
+        for(int j = 0;j < counts;j++)
         {
-            char temp[5];
-            scanf("%s",&temp);
-            auto f = find_if(v.begin(),v.end(),[&temp](student &a)->bool{return (strncmp(a.name,temp,4) < 0 ? false : !strncmp(a.name,temp,4));});
-            if(f != v.end()) (*f).course.push_back(c);
-            else
-            {
-                student temps;
-                strncpy(temps.name,temp,4);
-                temps.course.push_back(c);
-                v.push_back(temps);
-            }
+            string name;
+            cin>>name;
+            int nid = convert(name);
+            if(!b.test(nid * (k + 1))) b.set(nid * (k + 1));
+            b.set(nid * (k + 1) + num);
         }
     }
     for(int i = 0;i < n;i++)
     {
-        char temp[5];
-        scanf("%s",&temp);
-        printf("%s ",temp);
-        auto f = find_if(v.begin(),v.end(),[&temp](student &a)->bool{return (strncmp(a.name,temp,4) < 0 ? false : !strncmp(a.name,temp,4));});
-        if(f != v.end())
+        string name;
+        cin>>name;
+        cout<<name<<" ";
+        int nid = convert(name);
+        if(b.test(nid * (k + 1)))
         {
-            printf("%d",(*f).course.size());
-            if((*f).course.size())
+            int countn = 0;
+            vector<int> v;
+            for(int j = nid * (k + 1) + 1;j < (nid + 1) * (k + 1);j++)
             {
-                sort((*f).course.begin(),(*f).course.end());
-                for_each((*f).course.begin(),(*f).course.end(),[&](int i)->void{printf(" %d",i);});
+                if(b.test(j))
+                {
+                    countn++;
+                    v.push_back(j - nid * (k + 1));
+                }
             }
-            printf("\n");
+            cout<<countn<<endl;
+            if(countn) for_each(v.begin(),v.end(),[&](int i)->void{cout<<" "<<i;});
         }
-        else printf("0\n");
+        else cout<<"0"<<endl;
     }
 }
