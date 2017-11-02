@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <vector>
 #include <algorithm>
 using namespace std;
 
@@ -16,7 +17,7 @@ int main()
 {
     int flag,n,k;
     cin>>flag>>n>>k;
-    LNode p[100000];
+    vector<LNode> p(100000);
     for(int i = 0; i < n; i++)
     {
         int temp;
@@ -25,9 +26,8 @@ int main()
     }
     if(flag != -1)
     {
-    	int (*ap) = new int[n];
-        int (*dp) = new int[n];
-        int begin = 0;int end = 0;
+    	vector<int> ap(n),dp(n);
+        int begin = 0,end = 0;
         for(int i = 0; i < n/k; i++)
         {
             if(flag != -1)
@@ -46,8 +46,8 @@ int main()
                  }
                 if(!stop)
                 {
-                    reverse(ap+begin,ap+end);
-                    reverse(dp+begin,dp+end);
+                    reverse(ap.begin()+begin,ap.begin()+end);
+                    reverse(dp.begin()+begin,dp.begin()+end);
                     begin = end;
                 }
             }
@@ -72,7 +72,6 @@ int main()
             if(i != end - 1) cout<<setw(5)<<ap[i+1]<<"\n";
             else cout<<"-1\n";
         }
-        delete [] ap;delete [] dp;
     }
     else cout<<"-1\n";
 }
