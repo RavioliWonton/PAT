@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 int main()
 {
@@ -10,15 +11,15 @@ int main()
     {
         int temp;
         cin>>temp;
+        distance.push_back(circumference);
         circumference += temp;
-        distance.push_back(temp);
     }
 	cin>>m;
 	for(int i = 0;i < m;i++)
     {
-        int start,stop,length = 0;
+        int start,stop;
         cin>>start>>stop;
-        for(int j = min(start,stop) - 1;j < max(start,stop) - 1;j++) length += distance[j];
+        int length = distance[max(start,stop) - 1] - distance[min(start,stop) - 1];
         cout<<min(length,circumference - length)<<endl;
     }
 }
