@@ -7,8 +7,7 @@
 #include <algorithm>
 using namespace std;
 
-typedef struct
-{
+typedef struct {
     int data;
     int next;
 } LNode;

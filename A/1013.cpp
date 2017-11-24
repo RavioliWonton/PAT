@@ -1,61 +1,42 @@
 #include <iostream>
 #include <algorithm>
+#include <set>
+#include <map>
 #include <vector>
-#include <utility>
 using namespace std;
 
-struct compf {
-	compf(int const &i) :_i(i) {}
-	bool operator() (pair<int,int> const& p) {return p.first == _i;}
-	int _i;
-};
-
-struct comps {
-	comps(int const &i) :_i(i) {}
-	bool operator() (pair<int,int> const& p) {return p.second == _i;}
-	int _i;
-};
+int findg(const int& key,vector<int>& v)
+{
+    if(v[key] != key) v[key] = findg(v[key],v);
+    return v[key];
+}
 
 int main()
 {
 	int n,m,k;
 	cin>>n>>m>>k;
-	vector<pair<int,int> > p;
+	map<int,set<int> > graph;
 	for(int i = 0;i < m;i++)
-	{
-		int first,second;
-		cin>>first>>second;
-		if(first <= n && second <= n) p.push_back(make_pair(first,second));
-	}
-	for(int i = 0;i < k;i++)
-	{
-		int request;
-		cin>>request;
-		vector<int> pn;
-		vector<pair<int,int> > pc(p);
-        for(;;)
-		{
-			if(find_if(pc.begin(),pc.end(),compf(request)) != pc.end())
-			{
-				pn.push_back(find_if(pc.begin(),pc.end(),compf(request))->second);
-				pc.erase(find_if(pc.begin(),pc.end(),compf(request)));
-			}
-			else if(find_if(pc.begin(),pc.end(),comps(request)) != pc.end())
-			{
-				pn.push_back(find_if(pc.begin(),pc.end(),comps(request))->first);
-				pc.erase(find_if(pc.begin(),pc.end(),comps(request)));
-			}
-			else break;
-		}
-		int countn = 0;
-		for(vector<int>::iterator it = pn.begin();it != pn.end();it++)
-		{
-			for(vector<int>::iterator ie = it+1;ie != pn.end();ie++)
-			{
-                pair<int,int> pt(*it,*ie);
-                if((find(pc.begin(),pc.end(),pt) == pc.end()) && (find(pc.begin(),pc.end(),make_pair(pt.second,pt.first)) == pc.end())) countn++;
-			}
-		}
-		cout<<countn<<endl;
-	}
+    {
+        int from,to;
+        cin>>from>>to;
+        graph[from].insert(to);
+        graph[to].insert(from);
+    }
+    for(int i = 0;i < k;i++)
+    {
+        int city;
+        cin>>city;
+        vector<int> temp;
+        for(int i = 0;i < n;i++) temp.push_back(i + 1);
+        for(int i = 1;i <= n && i != city;i++)
+        {
+            for(int j = 1;j <= n && j != city;j++)
+                if(graph[i].count(j)) temp[findg(j,temp)] = findg(i,temp);
+        }
+        int countn = 0;
+        for(int i = 1;i <= n;i++)
+            if(temp[i] == i) countn++;
+        cout<<(countn < 2 ? 0 : (n - 1 == 1 ? 0 : countn - 2))<<endl;
+    }
 }

@@ -5,14 +5,12 @@
 #include <algorithm>
 using namespace std;
 
-typedef struct
-{
+typedef struct {
     double point;
     vector<char> answer;
 } question;
 
-typedef struct
-{
+typedef struct {
     int countn;
     int sequence;
     char option;
