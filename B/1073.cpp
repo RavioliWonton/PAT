@@ -63,13 +63,9 @@ int main()
                 if(ans[j].answer.size() < v[j].answer.size()) grade += v[j].point / 2;
                 for(char& c : difference)
                 {
-                    auto itt = find_if(w.begin(),w.end(),[&j,&c](wronganswer a)->bool{return (a.sequence == j + 1) && (a.option == c);});
+                    auto itt = find_if(w.begin(),w.end(),[&](wronganswer a)->bool{return (a.sequence == j + 1) && (a.option == c);});
                     if(itt != w.end()) (*itt).countn++;
-                    else
-                    {
-                        wronganswer tempw {1,j + 1,c};
-                        w.push_back(tempw);
-                    }
+                    else w.push_back({1,j + 1,c});
                 }
             }
             else grade += v[j].point;

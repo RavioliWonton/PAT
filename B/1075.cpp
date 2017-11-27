@@ -20,7 +20,7 @@ int main()
 {
 	int start,n,k;
 	cin>>start>>n>>k;
-	vector<node> input(100000),todo,result,lesszero,lessk,morek;
+	vector<node> input(100000),result,lesszero,lessk,morek;
 	for(int i = 0;i < n;i++)
     {
         int key,value,next;
@@ -30,19 +30,13 @@ int main()
     int coda = start;
     for(;coda != -1;)
     {
-        todo.push_back({coda,input[coda].value});
+        if(input[coda].value < 0) lesszero.push_back({coda,input[coda].value});
+        else if(input[coda].value <= k) lessk.push_back({coda,input[coda].value});
+        else if(input[coda].value > k) morek.push_back({coda,input[coda].value});
         coda = input[coda].key;
-    }
-    for(auto& x : todo)
-    {
-        if(x.value < 0) lesszero.push_back(x);
-        else if(x.value < k) lessk.push_back(x);
-        else if(x.value > k) morek.push_back(x);
     }
     result.insert(result.end(),lesszero.begin(),lesszero.end());
     result.insert(result.end(),lessk.begin(),lessk.end());
-    auto itk = find_if(todo.begin(),todo.end(),[&](node a)->bool{return (a.value == k);});
-    if(itk != todo.end()) result.push_back(*itk);
     result.insert(result.end(),morek.begin(),morek.end());
     for(auto it = result.begin();it != result.end();it++)
     {
