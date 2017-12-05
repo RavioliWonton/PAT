@@ -5,7 +5,7 @@
 using namespace std;
 int main()
 {
-    map<int,double,greater<int> > polynomial;
+    map<int,double,greater<int> > base,polynomial;
     for(int i = 0; i < 2; i++)
     {
         int n;
@@ -15,11 +15,13 @@ int main()
             int exponents;
             double coefficients;
             cin>>exponents>>coefficients;
-            polynomial[exponents] += coefficients;
+            if(i)
+                for(auto &x : base) polynomial[exponents + x.first] += coefficients*x.second;
+            else base[exponents] += coefficients;
         }
     }
     for(auto& x : polynomial)
-        if(x.second == 0) polynomial.erase(x.first);
+        if(!x.second) polynomial.erase(x.first);
     cout<<polynomial.size();
     cout.setf(ios::fixed);
     for(auto& x : polynomial) cout<<" "<<x.first<<" "<<setprecision(1)<<x.second;
