@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <algorithm>
 using namespace std;
 
@@ -7,114 +8,51 @@ typedef struct {
     int height;
 } people;
 
-bool cmp(people a,people b)
+void process(const vector<people>& p,const int& length,int& countn,const int& n)
 {
-    if(a.height != b.height) return a.height > b.height;
-    else return a.name < b.name;
+    vector<people> tp(length);
+    bool flag1 = true;
+    int flagl = length/2 - 1,flagr = length/2 + 1;
+    for(int j = 0; j < length; j++)
+    {
+        if(countn < n)
+        {
+            if(flag1)
+            {
+                tp[length/2] = p[countn];
+                flag1 = false;
+                countn++;
+            }
+            else if(!(j % 2) && flagr < length)
+            {
+                tp[flagr] = p[countn];
+                flagr++;
+                countn++;
+            }
+            else if(j % 2 && flagl >= 0)
+            {
+                tp[flagl] = p[countn];
+                flagl--;
+                countn++;
+            }
+        }
+        else break;
+    }
+    for(int i = 0; i < tp.size(); i++) cout<<(i ? " " : "")<<tp[i].name;
+    cout<<endl;
 }
 
 int main()
 {
-	int n,k;
-	cin>>n>>k;
-	int pn = n/k + n - n/k*k;
-	people (*p) = new people[n];
-    for(int i = 0;i < n;i++)
-        cin>>p[i].name>>p[i].height;
-    sort(p,p+n,cmp);
+    int n,k;
+    cin>>n>>k;
+    vector<people> p(n);
+    for(int i = 0; i < n; i++) cin>>p[i].name>>p[i].height;
+    sort(p.begin(),p.end(),[&](people a,people b)->bool{if(a.height != b.height) return a.height > b.height; else return a.name < b.name;});
     int countn = 0;
-    for(int i = 0;i < k;i++)
+    for(int i = 0; i < k; i++)
     {
-        if(!i && countn < n)
-        {
-            bool flag1 = true;
-            people (*tp) = new people[n/k + n - n/k*k];
-            int flag = (n/k + n - n/k*k)/2;int flagl = flag - 1;int flagr = flag + 1;
-            for(int j = 0;j < n/k + n - n/k*k;j++)
-            {
-                if(countn < n)
-                {
-                    if(flag1)
-                    {
-                        tp[flag] = p[countn];
-                        flag1 = false;
-                        countn++;
-                    }
-                    else
-                    {
-                        if(j % 2 == 0 && flagr < n/k + n - n/k*k)
-                        {
-                            tp[flagr] = p[countn];
-                            flagr++;
-                            countn++;
-                        }
-                        else if(j % 2 != 0 && flagl >= 0)
-                        {
-                            tp[flagl] = p[countn];
-                            flagl--;
-                            countn++;
-                        }
-                    }
-                }
-            }
-            bool flag2 = true;
-            for(int i = 0;i < n/k + n - n/k*k;i++)
-            {
-                if(flag2)
-                {
-                    cout<<tp[i].name;
-                    flag2 = false;
-                }
-                else cout<<" "<<tp[i].name;
-            }
-            cout<<endl;
-            delete [] tp;
-        }
-        else if(countn < n)
-        {
-            bool flag1 = true;
-            people (*tp) = new people[n/k];
-            int flag = (n/k)/2;int flagl = flag - 1;int flagr = flag + 1;
-            for(int j = 0;j < n/k;j++)
-            {
-                if(countn < n)
-                {
-                    if(flag1)
-                    {
-                        tp[flag] = p[countn];
-                        flag1 = false;
-                        countn++;
-                    }
-                    else
-                    {
-                        if(j % 2 == 0 && flagr < n/k)
-                        {
-                            tp[flagr] = p[countn];
-                            flagr++;
-                            countn++;
-                        }
-                        else if(j % 2 != 0 && flagl >= 0)
-                        {
-                            tp[flagl] = p[countn];
-                            flagl--;
-                            countn++;
-                        }
-                    }
-                }
-            }
-            bool flag2 = true;
-            for(int i = 0;i < n/k;i++)
-            {
-                if(flag2)
-                {
-                    cout<<tp[i].name;
-                    flag2 = false;
-                }
-                else cout<<" "<<tp[i].name;
-            }
-            cout<<endl;
-            delete [] tp;
-        }
+        if(countn < n) process(p,i ? n/k : n/k + n - n/k*k,countn,n);
+        else break;
     }
-    delete [] p;
 }

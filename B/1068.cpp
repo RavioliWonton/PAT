@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 typedef struct {
@@ -6,114 +8,52 @@ typedef struct {
     bool duplication;
 } pixel;
 
-bool compare(int &a,int &b,int &threshold)
-{
-    if(((a > b) ? a : b) - ((a < b) ? a : b) > threshold) return true;
-    else return false;
-}
-
 int main()
 {
     int rown,arrayn,threshold;
     cin>>arrayn>>rown>>threshold;
-    pixel (*p) = new pixel[arrayn*rown];
+    vector<pixel> p;
     for(int i = 0; i < arrayn*rown; i++)
     {
-        cin>>p[i].value;
-        p[i].duplication = true;
-        for(int j = 0; j < i; j++)
-            if(p[j].value == p[i].value) {p[i].duplication = p[j].duplication = false;break;}
+        int value;
+        cin>>value;
+        auto it = find_if(p.begin(),p.end(),[&](pixel a)->bool{return a.value == value;});
+        if(it != p.end()) (*it).duplication = false;
+        p.push_back({value,(it == p.end())});
     }
     bool flag = true;int answer = -1;
+    auto compare = [&](int a,int b,int threshold)->bool{return (((a > b) ? a : b) - ((a < b) ? a : b) > threshold);};
     for(int i = 0; i < arrayn*rown; i++)
     {
+        bool judge = false;
         if(p[i].duplication)
         {
             if(!(i/arrayn))
             {
-                if(!(i%arrayn))
-                {
-                    if(compare(p[i+1].value,p[i].value,threshold) && compare(p[i+arrayn].value,p[i].value,threshold) && compare(p[i+arrayn+1].value,p[i].value,threshold))
-                    {
-                        if(answer == -1) answer = i;
-                        else {flag = false;break;}
-                    }
-                }
-                else if(i%arrayn == arrayn - 1)
-                {
-                    if(compare(p[i-1].value,p[i].value,threshold) && compare(p[i+arrayn-1].value,p[i].value,threshold) && compare(p[i+arrayn].value,p[i].value,threshold))
-                    {
-                        if(answer == -1) answer = i;
-                        else {flag = false;break;}
-                    }
-                }
-                else
-                {
-                    if(compare(p[i-1].value,p[i].value,threshold) && compare(p[i+1].value,p[i].value,threshold) && compare(p[i+arrayn-1].value,p[i].value,threshold) && compare(p[i+arrayn].value,p[i].value,threshold) && compare(p[i+arrayn+1].value,p[i].value,threshold))
-                    {
-                        if(answer == -1) answer = i;
-                        else {flag = false;break;}
-                    }
-                }
+                if(!(i%arrayn) && (compare(p[i+1].value,p[i].value,threshold) && compare(p[i+arrayn].value,p[i].value,threshold) && compare(p[i+arrayn+1].value,p[i].value,threshold))) judge = true;
+                else if((i%arrayn == arrayn - 1) && (compare(p[i-1].value,p[i].value,threshold) && compare(p[i+arrayn-1].value,p[i].value,threshold) && compare(p[i+arrayn].value,p[i].value,threshold))) judge = true;
+                else if(compare(p[i-1].value,p[i].value,threshold) && compare(p[i+1].value,p[i].value,threshold) && compare(p[i+arrayn-1].value,p[i].value,threshold) && compare(p[i+arrayn].value,p[i].value,threshold) && compare(p[i+arrayn+1].value,p[i].value,threshold)) judge = true;
             }
             else if(i/arrayn == rown - 1)
             {
-                if(i%arrayn == arrayn - 1)
-                {
-                    if(compare(p[i-1].value,p[i].value,threshold) && compare(p[i-arrayn-1].value,p[i].value,threshold) && compare(p[i-arrayn].value,p[i].value,threshold))
-                    {
-                        if(answer == -1) answer = i;
-                        else {flag = false;break;}
-                    }
-                }
-                else if(!(i%arrayn))
-                {
-                    if(compare(p[i+1].value,p[i].value,threshold) && compare(p[i-arrayn].value,p[i].value,threshold) && compare(p[i-arrayn+1].value,p[i].value,threshold))
-                    {
-                        if(answer == -1) answer = i;
-                        else {flag = false;break;}
-                    }
-                }
-                else
-                {
-                    if(compare(p[i-1].value,p[i].value,threshold) && compare(p[i+1].value,p[i].value,threshold) && compare(p[i-arrayn-1].value,p[i].value,threshold) && compare(p[i-arrayn].value,p[i].value,threshold) && compare(p[i-arrayn+1].value,p[i].value,threshold))
-                    {
-                        if(answer == -1) answer = i;
-                        else {flag = false;break;}
-                    }
-                }
+                if((i%arrayn == arrayn - 1) && (compare(p[i-1].value,p[i].value,threshold) && compare(p[i-arrayn-1].value,p[i].value,threshold) && compare(p[i-arrayn].value,p[i].value,threshold))) judge = true;
+                else if(!(i%arrayn) && (compare(p[i+1].value,p[i].value,threshold) && compare(p[i-arrayn].value,p[i].value,threshold) && compare(p[i-arrayn+1].value,p[i].value,threshold))) judge = true;
+                else if(compare(p[i-1].value,p[i].value,threshold) && compare(p[i+1].value,p[i].value,threshold) && compare(p[i-arrayn-1].value,p[i].value,threshold) && compare(p[i-arrayn].value,p[i].value,threshold) && compare(p[i-arrayn+1].value,p[i].value,threshold)) judge = true;
             }
             else
             {
-                if(!(i%arrayn))
-                {
-                    if(compare(p[i-arrayn].value,p[i].value,threshold) && compare(p[i-arrayn+1].value,p[i].value,threshold) && compare(p[i+1].value,p[i].value,threshold) && compare(p[i+arrayn].value,p[i].value,threshold) && compare(p[i+arrayn+1].value,p[i].value,threshold))
-                    {
-                        if(answer == -1) answer = i;
-                        else {flag = false;break;}
-                    }
-                }
-                else if(i%arrayn == arrayn - 1)
-                {
-                    if(compare(p[i-arrayn-1].value,p[i].value,threshold) && compare(p[i-arrayn].value,p[i].value,threshold) && compare(p[i-1].value,p[i].value,threshold) && compare(p[i+arrayn-1].value,p[i].value,threshold) && compare(p[i+arrayn].value,p[i].value,threshold))
-                    {
-                        if(answer == -1) answer = i;
-                        else {flag = false;break;}
-                    }
-                }
-                else
-                {
-                    if(compare(p[i-arrayn-1].value,p[i].value,threshold) && compare(p[i-arrayn].value,p[i].value,threshold) && compare(p[i-arrayn+1].value,p[i].value,threshold) && compare(p[i-1].value,p[i].value,threshold) && compare(p[i+1].value,p[i].value,threshold) && compare(p[i+arrayn-1].value,p[i].value,threshold) && compare(p[i+arrayn].value,p[i].value,threshold) && compare(p[i+arrayn+1].value,p[i].value,threshold))
-                    {
-                        if(answer == -1) answer = i;
-                        else {flag = false;break;}
-                    }
+                if(!(i%arrayn) && (compare(p[i-arrayn].value,p[i].value,threshold) && compare(p[i-arrayn+1].value,p[i].value,threshold) && compare(p[i+1].value,p[i].value,threshold) && compare(p[i+arrayn].value,p[i].value,threshold) && compare(p[i+arrayn+1].value,p[i].value,threshold))) judge = true;
+                else if((i%arrayn == arrayn - 1) && (compare(p[i-arrayn-1].value,p[i].value,threshold) && compare(p[i-arrayn].value,p[i].value,threshold) && compare(p[i-1].value,p[i].value,threshold) && compare(p[i+arrayn-1].value,p[i].value,threshold) && compare(p[i+arrayn].value,p[i].value,threshold))) judge = true;
+                else if(compare(p[i-arrayn-1].value,p[i].value,threshold) && compare(p[i-arrayn].value,p[i].value,threshold) && compare(p[i-arrayn+1].value,p[i].value,threshold) && compare(p[i-1].value,p[i].value,threshold) && compare(p[i+1].value,p[i].value,threshold) && compare(p[i+arrayn-1].value,p[i].value,threshold) && compare(p[i+arrayn].value,p[i].value,threshold) && compare(p[i+arrayn+1].value,p[i].value,threshold)) judge = true;
                 }
             }
+        if(judge)
+        {
+            if(answer == -1) answer = i;
+            else {flag = false;break;}
         }
     }
     if(answer == -1) cout<<"Not Exist"<<endl;
-    else if(answer != -1 && flag) cout<<"("<<answer % arrayn +1<<", "<<answer / arrayn + 1<<"): "<<p[answer].value<<endl;
     else if(!flag) cout<<"Not Unique"<<endl;
-    delete [] p;
+    else cout<<"("<<answer % arrayn +1<<", "<<answer / arrayn + 1<<"): "<<p[answer].value<<endl;
 }
