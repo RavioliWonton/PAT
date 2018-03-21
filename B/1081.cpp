@@ -1,6 +1,7 @@
 //那要是我密码是“......”呢？
 
 #include <iostream>
+#include <algorithm>
 using namespace std;
 int main()
 {
@@ -11,27 +12,9 @@ int main()
         string s;
         cin>>s;
         if(s.size() < 6) cout<<"Your password is tai duan le.\n";
-        else
-        {
-            int nc = 0,nn = 0;
-            bool flag = true;
-            for(char &c : s)
-            {
-                if(isdigit(c)) nn++;
-                else if(isalpha(c)) nc++;
-                else if(c != '.')
-                {
-                    cout<<"Your password is tai luan le.\n";
-                    flag = false;
-                    break;
-                }
-            }
-            if(flag)
-            {
-                if(!nc) cout<<"Your password needs zi mu.\n";
-                else if(!nn) cout<<"Your password needs shu zi.\n";
-                else cout<<"Your password is wan mei.\n";
-            }
-        }
+        else if(find_if(s.begin(),s.end(),[&](char a)->bool{return !isalnum(a) && (a != '.');}) != s.end()) cout<<"Your password is tai luan le.\n";
+        else if(!count_if(s.begin(),s.end(),::isdigit)) cout<<"Your password needs shu zi.\n";
+        else if(!count_if(s.begin(),s.end(),::isalpha)) cout<<"Your password needs zi mu.\n";
+        else cout<<"Your password is wan mei.\n";
     }
 }

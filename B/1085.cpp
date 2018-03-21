@@ -1,3 +1,5 @@
+//不改了，明天再说。
+
 #include <iostream>
 #include <vector>
 #include <cctype>
@@ -46,13 +48,15 @@ int main()
 			else return a.name < b.name;
 		});
 	cout<<v.size()<<endl;
-	int rankn = 1,pastpopulation = 0;
-	double pastgrade = 0.0;
+	int rankn = 1,pastpopulation = -1;
+	double pastgrade = -1.0;
 	cout.setf(ios::fixed);
 	cout.precision(0);
 	for(auto it = v.begin();it != v.end();it++)
 	{
-		if(pastgrade != (*it).grade && pastpopulation != (*it).population) rankn = distance(v.begin(),it) + 1;
+		if((int)pastgrade != (int)(*it).grade && pastpopulation != (*it).population) rankn = distance(v.begin(),it) + 1;
 		cout<<rankn<<" "<<(*it).name<<" "<<(*it).grade<<" "<<(*it).population<<endl;
+		pastgrade = (*it).grade;
+		pastpopulation = (*it).population;
 	}
 }

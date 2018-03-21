@@ -1,6 +1,5 @@
-//iomanip突然发神经病了，只得改用printf。
-
 #include <iostream>
+#include <iomanip>
 #include <cmath>
 using namespace std;
 int main()
@@ -18,11 +17,11 @@ int main()
 			maxl = sqrt(pow(x,2)+pow(y,2));
 			maxn = number;
 		}
-		else if(sqrt(pow(x,2)+pow(y,2)) < minl)
+		if(sqrt(pow(x,2)+pow(y,2)) < minl)
 		{
 			minl = sqrt(pow(x,2)+pow(y,2));
 			minn = number;
 		}
 	}
-	printf("%04d %04d",minn,maxn);
+	cout<<setfill('0')<<setw(4)<<minn<<" "<<setw(4)<<maxn<<endl;
 }
