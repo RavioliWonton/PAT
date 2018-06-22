@@ -1,62 +1,59 @@
-//不改了，明天再说。
-
-#include <iostream>
-#include <vector>
-#include <cctype>
+#include <map>
+#include <set>
 #include <cmath>
 #include <algorithm>
 using namespace std;
 
 typedef struct {
-	string name;
 	double grade;
 	int population;
+} attribution;
+
+typedef struct {
+	string name;
+	attribution property;
 } company;
+
+struct companyCompare {
+	bool operator() (const company& a, const company& b) const {
+		if(a.property.grade != b.property.grade) return a.property.grade > b.property.grade;
+		else if(a.property.population != b.property.population) return a.property.population < b.property.population;
+		else return a.name < b.name;
+	}
+};
 
 int main()
 {
 	int n;
-	cin>>n;
-	vector<company> v;
-	auto f = [&](char a)->double {
+	scanf("%d",&n);
+	map<string, attribution> teams;
+	for(int i = 0;i < n;i++)
+	{
+		string number,companyn;
+		number.resize(6);
+		companyn.resize(6);
+		double grade;
+		auto f = [&](char a)->double {
 					switch(a)
 					{
 							case 'B':return -1.5;break;
 							case 'A':return 1.0;break;
 							case 'T':return 1.5;break;
 					}
-					return 0;
-	};
-	for(int i = 0;i < n;i++)
-	{
-		string number,companyn;
-		double grade;
-		cin>>number>>grade>>companyn;
+					return 0.0;
+		};
+		scanf("%s %lf %s",&number[0],&grade,&companyn[0]);
 		transform(companyn.begin(),companyn.end(),companyn.begin(),::tolower);
-		auto it = find_if(v.begin(),v.end(),[&](company a)->bool{return a.name == companyn;});
-		if(it != v.end())
-		{
-			(*it).grade += (f(number.front()) > 0 ? f(number.front())*grade : grade / -f(number.front()));
-			(*it).population++;
-		}
-		else v.push_back({companyn,(f(number.front()) > 0 ? f(number.front())*grade : grade / -f(number.front())),1});
+		teams[companyn].grade += (f(number.front()) > 0 ? f(number.front())*grade : grade / -f(number.front()));
+		teams[companyn].population++;
 	}
-	for_each(v.begin(),v.end(),[&](company a)->void{a.grade = trunc(a.grade / (double)a.population);});
-	sort(v.begin(),v.end(),[&](company a,company b)->bool{
-			if(a.grade != b.grade) return a.grade > b.grade;
-			else if(a.population != b.population) return a.population < b.population;
-			else return a.name < b.name;
-		});
-	cout<<v.size()<<endl;
-	int rankn = 1,pastpopulation = -1;
-	double pastgrade = -1.0;
-	cout.setf(ios::fixed);
-	cout.precision(0);
-	for(auto it = v.begin();it != v.end();it++)
+	set<company, companyCompare> result;
+	for(auto& corporation : teams) result.insert({corporation.first,{trunc(corporation.second.grade), corporation.second.population}});
+	printf("%Lu\n",result.size());
+	int rankn = 1;
+	for(auto it = result.begin();it != result.end();it++)
 	{
-		if((int)pastgrade != (int)(*it).grade && pastpopulation != (*it).population) rankn = distance(v.begin(),it) + 1;
-		cout<<rankn<<" "<<(*it).name<<" "<<(*it).grade<<" "<<(*it).population<<endl;
-		pastgrade = (*it).grade;
-		pastpopulation = (*it).population;
+		if(it != result.begin() && (*it).property.grade != (*prev(it)).property.grade) rankn = distance(result.begin(),it) + 1;
+		printf("%d %s %.lf %d\n",rankn,(*it).name.c_str(),(*it).property.grade,(*it).property.population);
 	}
 }

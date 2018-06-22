@@ -12,7 +12,19 @@ int main()
 	result.push_back(d);
 	for(int i = 0;i < n;i++)
 	{
-		sort(result.begin(),result.end());
+		vector<int> temp;
+		for(auto it = result.begin();it != result.end();)
+		{
+			auto range = equal_range(it,result.end(),*it);
+			temp.push_back(*it);
+			temp.push_back(range.second - range.first);
+			it = range.second;
+		}
+		result.clear();
+		result.assign(temp.begin(),temp.end());
+		for_each(result.begin(),result.end(),[&](int i)->void{cout<<i;});
+		cout<<endl;
+		/*sort(result.begin(),result.end());
 		vector<int> uresult(result.size());
 		auto it = unique_copy(result.begin(),result.end(),uresult.begin());
 		uresult.resize(distance(uresult.begin(),it));
@@ -21,9 +33,7 @@ int main()
 		{
 			counts.push_back(a);
 			counts.push_back(count(result.begin(),result.end(),a));
-		}
-		result.clear();
-		result.assign(counts.begin(),counts.end());
+		}*/
 	}
 	for_each(result.begin(),result.end(),[&](int i)->void{cout<<i;});
 	cout<<endl;
