@@ -1,17 +1,23 @@
+//不能set，否则超时。
+
 #include <iostream>
-#include <functional>
+#include <vector>
 #include <algorithm>
 using namespace std;
 
 int main()
 {
-    int n;
+    int n,a = 0;
     cin>>n;
-    int (*p) = new int[n+1];int a = 0;
-    for(int i = 1;i < n+1;i++) cin>>p[i];
-    sort(p+1,p+n+1,greater<int>());
-    for(int j = 1;j < n+1;j++)
-        if(p[j] > j) a++;
+    vector<int> p;
+    for(int i = 0;i < n;i++)
+    {
+        int input;
+        cin>>input;
+        p.push_back(input);
+    }
+    sort(p.begin(),p.end(),greater_equal<int>());
+    for(int j = 1;j < n + 1;j++)
+        if(*next(p.begin(),j - 1) > j) a++;
     cout<<a<<endl;
-    delete [] p;
 }

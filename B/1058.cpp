@@ -1,58 +1,63 @@
 #include <iostream>
-#include <string>
-#include <cstring>
+#include <vector>
+#include <set>
 #include <algorithm>
 using namespace std;
 
 typedef struct {
     int number;
     int grade;
-    int option;
-    int truthn;
-    string truth;
+    set<char> truth;
     int error;
 } topic;
+
+struct topicCompare {
+	bool operator() (const topic& a, const topic& b) const {
+		if(a.error != b.error) return a.error > b.error;
+		else return a.number < b.number;
+	}
+};
 
 int main()
 {
     int n,m;
     cin>>n>>m;
-    topic (*p) = new topic[m];
+    vector<topic> p;
     for(int i = 0;i < m;i++)
     {
-        p[i].number = i + 1;
-        cin>>p[i].grade>>p[i].option>>p[i].truthn;
-        for(int j = 0;j < p[i].truthn;j++)
+    	int grade, option, truthn;
+    	set<char> truth;
+        cin>>grade>>option>>truthn;
+        for(int j = 0;j < truthn;j++)
         {
             char temp;
             cin>>temp;
-            p[i].truth.push_back(temp);
+            truth.insert(temp);
         }
-        p[i].error = 0;
+        p.push_back({i + 1, grade, truth, 0});
     }
     for(int i = 0;i < n;i++)
     {
         int grade = 0;
-        for(int j = 0;j < m;j++)
+        for(auto& a : p)
         {
             int option;char temp;
             cin>>temp>>option;
-            string answer;
-            for(;(cin>>temp) && (temp != ')');) answer.push_back(temp);
-            sort(answer.begin(),answer.end());
-            if(answer == p[j].truth) grade += p[j].grade;
-            else p[j].error++;
+            set<char> answer;
+            for(;(cin>>temp) && (temp != ')');) answer.insert(temp);
+            if(answer == a.truth) grade += a.grade;
+            else a.error++;
         }
         cout<<grade<<endl;
     }
-    sort(p,p+m,[](topic a,topic b){if(a.error != b.error) return a.error > b.error;else return a.number < b.number;});
-    if(!p[0].error) cout<<"Too simple"<<endl;
+    set<topic, topicCompare> result(p.begin(),p.end());
+    if(!(*result.begin()).error) cout<<"Too simple"<<endl;
     else
     {
-        cout<<p[0].error;
-        for(int i = 0;i < m;i++)
+    	cout<<(*result.begin()).error;
+        for(auto& a : result)
         {
-            if(p[i].error == p[0].error) cout<<" "<<p[i].number;
+            if(a.error == (*result.begin()).error) cout<<" "<<a.number;
             else break;
         }
     }

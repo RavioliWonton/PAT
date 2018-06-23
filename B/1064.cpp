@@ -1,48 +1,37 @@
 #include <iostream>
-#include <functional>
+#include <vector>
+#include <set>
 #include <algorithm>
 using namespace std;
-
-int caculateSum(int a)
-{
-    int sum = 0;
-    for(;a >= 10;)
-    {
-        sum += a%10;
-        a /= 10;
-    }
-    return sum+a;
-}
 
 int main()
 {
     int n;
     cin>>n;
-    int (*p) = new int[n];
-    for(int i = 0;i < n;i++) cin>>p[i];
-    int (*f) = new int[n];int countn = 0;
+    vector<int> p;
+    for(int i = 0;i < n;i++)
+	{
+		int input;
+		cin>>input;
+		p.push_back(input);
+	}
+    set<int> f;
     for(int i = 0;i < n;i++)
     {
-        bool flag = false;
-        for(int k = 0;k < countn;k++)
-        {
-            if(f[k] == caculateSum(p[i]))
-            {
-                flag = true;
-                break;
-            }
-        }
-        if(!flag)
-        {
-            f[countn] = caculateSum(p[i]);
-            countn++;
-        }
+    	auto func = [&](int a)->int {
+			int sum = 0;
+			for(;a >= 10;)
+			{
+				sum += a%10;
+				a /= 10;
+			}
+			return sum + a;
+		};
+		int num = func(*next(p.begin(),i));
+        if(!f.count(num)) f.insert(num);
     }
-    delete [] p;
-    cout<<countn<<endl;
-    sort(f,f+countn,less<int>());
-    cout<<f[0];
-    for(int i = 1;i < countn;i++) cout<<" "<<f[i];
+    cout<<f.size()<<endl;
+    cout<<*f.begin();
+    for(auto it = next(f.begin(),1);it != f.end();advance(it,1)) cout<<" "<<(*it);
     cout<<endl;
-    delete [] f;
 }

@@ -1,22 +1,22 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 int main()
 {
 	int n,m;
 	cin>>n>>m;
-	int (*pm) = new int[m];bool (*am) = new bool[m];
-    for(int i = 0;i < m;i++) cin>>pm[i];
-    for(int i = 0;i < m;i++) cin>>am[i];
+	vector<pair<int, int> > ans(m);
+    for(int i = 0;i < m;i++) cin>>ans[i].first;
+    for(int i = 0;i < m;i++) cin>>ans[i].second;
     for(int i = 0;i < n;i++)
     {
         int grade = 0;
         for(int j = 0;j < m;j++)
         {
-            bool temp;
+            int temp;
             cin>>temp;
-            if(temp == am[j]) grade += pm[j];
+            if(!(temp ^ ans[j].second)) grade += ans[j].first;
         }
-        cout<<grade<<endl;
+        cout<<grade<<"\n";
     }
-    delete [] pm;delete [] am;
 }
