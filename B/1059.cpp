@@ -5,7 +5,7 @@
 #include <cmath>
 using namespace std;
 
-void createPrime(int& N, vector<bool>& p)
+void createPrime(const int& N, vector<bool>& p)
 {
 	for(auto it = p.begin();it != next(p.begin(),sqrt(N) + 1);it++)
 	{
@@ -18,7 +18,7 @@ void createPrime(int& N, vector<bool>& p)
 	}
 }
 
-void Find(int& N,vector<int>& p,vector<bool>& q,int& r,vector<bool>& s)
+void Find(const int& N,const vector<int>& p,vector<bool>& q,const int& r,const vector<bool>& s)
 {
 	for(auto it = p.begin();it != p.end();it++)
 	{

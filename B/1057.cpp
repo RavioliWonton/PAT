@@ -1,22 +1,14 @@
 #include <iostream>
-#include <string>
-#include <cctype>
+#include <numeric>
 using namespace std;
-
-int countalpha(string a)
-{
-    int sum = 0;
-    for(int i = 0;i < a.length();i++)
-        if((a[i] >= 'A' && a[i] <= 'Z') || (a[i] >= 'a' && a[i] <= 'z')) sum += (int)(tolower(a[i]) - 'a' + 1);
-    return sum;
-}
 
 int main()
 {
 	string a;
-	getline(cin,a);
-	int sum = countalpha(a);
-	int count1 = 0;int count0 = 0;
+    char ch;
+	for(;cin.get(ch) && ch != '\n';)
+        if(isalpha(ch)) a.push_back(tolower(ch));
+	int sum = accumulate(a.begin(),a.end(),0,[&](const int x, const char y)->int{return x + (int)(y - 'a' + 1);}),count0 = 0,count1 = 0;
 	for(;sum != 0;)
     {
         if(sum%2 == 1) count1++;

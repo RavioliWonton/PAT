@@ -3,12 +3,12 @@
 using namespace std;
 int main()
 {
-	int n,d;double e;
+	int n,d,pv = 0,v = 0;
+    double e;
 	cin>>n>>e>>d;
-	int pv = 0;int  v = 0;
     for(int i = 0;i < n;i++)
     {
-        int m;int l = 0;
+        int m,l = 0;
         cin>>m;
         for(int j = 0;j < m;j++)
         {

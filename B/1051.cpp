@@ -4,12 +4,12 @@
 #include <iostream>
 #include <iomanip>
 #include <complex>
-#include <cmath>
 using namespace std;
 
-ostream& operator<<(ostream& out,complex<double>& rhs)
+ostream& operator<<(ostream& out,const complex<double>& rhs)
 {
-    out.setf(ios::fixed);out.precision(2);
+    out.setf(ios::fixed);
+    out.precision(2);
     if(abs(rhs.real()) < 0.01 || rhs.real() == 0.0) out <<"0.00"<<(rhs.imag() >= 0 || abs(rhs.imag()) < 0.01 ? "+" : "")<<(abs(rhs.imag()) < 0.01 || rhs.imag() == 0.0 ? 0.0 : rhs.imag())<<"i";
     else out << rhs.real()<<(rhs.imag() >= 0 || abs(rhs.imag()) < 0.01 ? "+" : "")<< (abs(rhs.imag()) < 0.01 || rhs.imag() == 0.0 ? 0.0 : rhs.imag())<<"i";
     return out;

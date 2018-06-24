@@ -1,17 +1,11 @@
 #include <iostream>
-#include <functional>
 #include <algorithm>
-#include <cstring>
+#include <vector>
 using namespace std;
 
-int cmp(const void *a,const void *b)
+int getwidth(const int& n)
 {
-     return *(int*)b-*(int*)a;
-}
-
-int getwidth(int n)
-{
-    int mini = n;int width = 1;
+    int mini = n,width = 1;
     for(int i = 2;i < n-1;i++)
     {
         if(!(n % i) && (n/i > i ? n/i : i) - (n/i < i ? n/i : i) < mini)
@@ -27,21 +21,16 @@ int main()
 {
 	int n;
 	cin>>n;
-	int (*p) = new int[n];
+	vector<int> p(n);
     for(int i = 0;i < n;i++) cin>>p[i];
-    sort(p,p+n,greater_equal<int>());
+    sort(p.begin(),p.end(),greater_equal<int>());
     int width = getwidth(n);
     if(width == 1)
-    {
-        for(int i = 0;i < n;i++) cout<<p[i]<<endl;
-        delete [] p;
-    }
+        for(auto& a : p) cout<<a<<"\n";
     else
     {
-        int length = n / width;
-        int (**o) = new int*[width];
-        for(int i = 0;i < width;i++) o[i] = new int[length];
-        int rowflag1 = 0;int rowflag2 = width - 1;int arrayflag1 = 0;int arrayflag2 = length - 1;int flag = 0;
+        vector<vector<int> > o(width,vector<int>(n / width));
+        int rowflag1 = 0,rowflag2 = width - 1,arrayflag1 = 0,arrayflag2 = n / width - 1,flag = 0;
         for(;flag < n;)
         {
             if(arrayflag1 != arrayflag2 && flag < n)
@@ -65,14 +54,10 @@ int main()
                 arrayflag1++;
             }
         }
-        delete [] p;
-        for(int i = 0;i < width;i++)
+        for(auto& a : o)
         {
-            cout<<o[i][0];
-            for(int j = 1;j < length;j++) cout<<" "<<o[i][j];
-            cout<<endl;
-            delete [] o[i];
+            for(auto it = a.begin();it != a.end();it++) cout<<(it == a.begin() ? "" : " ")<<(*it);
+            cout<<"\n";
         }
-        delete [] o;
 	}
 }

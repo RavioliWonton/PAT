@@ -3,15 +3,15 @@
 #include <vector>
 using namespace std;
 
-vector<string> createList(string& a)
+void createList(vector<string>& v)
 {
-    vector<string> v;
-    int i,j;
-    for(i = a.find('['),j = a.find(']');i != string::npos && j != string::npos;i = a.find('[',j+1),j = a.find(']',j+1)) v.push_back(a.substr(i+1,j-i-1));
-    return v;
+    string a;
+    getline(cin,a);
+    for(auto i = a.find('['),j = a.find(']');i != string::npos && j != string::npos;i = a.find('[',j+1),j = a.find(']',j+1))
+        v.push_back(a.substr(i+1,j-i-1));
 }
 
-bool judge(int n,vector<string> &v)
+bool judge(const size_t n,const vector<string> &v)
 {
     if(n >= 0 && n < v.size()) return !v[n].empty();
     else return false;
@@ -19,10 +19,10 @@ bool judge(int n,vector<string> &v)
 
 int main()
 {
-    string a,b,c;
-    getline(cin,a);vector<string> av = createList(a);
-    getline(cin,b);vector<string> bv = createList(b);
-    getline(cin,c);vector<string> cv = createList(c);
+    vector<string> av,bv,cv;
+    createList(av);
+    createList(bv);
+    createList(cv);
     int n;
     cin>>n;
     for(int i = 0;i < n;i++)
