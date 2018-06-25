@@ -1,17 +1,9 @@
+//不要看到inplace_merge就开开心心地用了，惨痛教训。
+
 #include <iostream>
 #include <algorithm>
 #include <vector>
 using namespace std;
-
-void printvector(vector<int> &v)
-{
-	for(vector<int>::iterator it = v.begin();it != v.end();it++)
-	{
-		if(it == v.begin()) cout<<*it;
-		else cout<<" "<<*it;
-	}
-	cout<<endl;
-}
 
 int main()
 {
@@ -30,25 +22,26 @@ int main()
 		cin>>temp;
 		comparison.push_back(temp);
 	}
-	if(equal(is_sorted_until(comparison.begin(),comparison.end()),comparison.end(),input.begin() + (is_sorted_until(comparison.begin(),comparison.end()) - comparison.begin())))
+	if(equal(is_sorted_until(comparison.begin(),comparison.end()),comparison.end(),next(input.begin(), distance(comparison.begin(),is_sorted_until(comparison.begin(),comparison.end())))))
 	{
-		cout<<"Insertion Sort"<<endl;
-		sort(comparison.begin(),is_sorted_until(comparison.begin(),comparison.end(),less<int>()) + 1);
-		printvector(comparison);
+		cout<<"Insertion Sort\n";
+		sort(comparison.begin(),next(is_sorted_until(comparison.begin(),comparison.end(),less<int>()),1));
 	}
     else
 	{
-		cout<<"Merge Sort"<<endl;
-		vector<int>::iterator first = comparison.begin();
-		vector<int>::iterator middle = is_sorted_until(comparison.begin(),comparison.end());
-		vector<int>::iterator last = (comparison.end() - middle > middle - first ? middle + (middle - first) : comparison.end());
-		for(;first != middle;)
+		cout<<"Merge Sort\n";
+		int length = 1;
+		for(;(size_t)length < input.size();length *= 2)
 		{
-			inplace_merge(first,middle,last);
-			first = last;
-			middle = (comparison.end() - last >= 2*(last - middle) ? last + (last - middle) : last);
-			last = ((middle != last && comparison.end() - last > 2*(last - middle)) ? middle + (middle - first) : comparison.end());
+			for(int i = 0;i < n / length;i++) sort(next(input.begin(),i*length),next(input.begin(),(i+1)*length));
+			sort(next(input.begin(),n / length * length),input.end());
+			if(input == comparison) break;
 		}
-		printvector(comparison);
+		length *= 2;
+		for(int i = 0;i < n / length;i++) sort(next(comparison.begin(),i*length),next(comparison.begin(),(i+1)*length));
+		sort(next(comparison.begin(),n / length * length),comparison.end());
 	}
+	for(auto it = comparison.begin();it != comparison.end();it++)
+		cout<<(it != comparison.begin() ? " " : "")<<(*it);
+	cout<<endl;
 }
