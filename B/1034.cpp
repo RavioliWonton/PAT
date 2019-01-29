@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <string>
-#include <functional>
 using namespace std;
 
 string simplification(unsigned long long&& a,unsigned long long&& b,bool&& flag)
@@ -15,8 +14,8 @@ string simplification(unsigned long long&& a,unsigned long long&& b,bool&& flag)
     }
     else
     {
-        function<unsigned long long(const unsigned long long, const unsigned long long)> gcd = [&](auto a, auto b)->long long{return b == 0 ? a : gcd(b, a % b);};
-        return move(flag ? to_string(a / gcd(a,b))+"/"+to_string(b / gcd(a,b)) : "(-"+to_string(a / gcd(a,b))+"/"+to_string(b / gcd(a,b))+")");
+        auto gcd = [&](auto a, auto b, auto&& self)->unsigned long long{return b == 0 ? a : self(b, a % b, self);};
+        return move(flag ? to_string(a / gcd(a,b,gcd))+"/"+to_string(b / gcd(a,b,gcd)) : "(-"+to_string(a / gcd(a,b,gcd))+"/"+to_string(b / gcd(a,b,gcd))+")");
     }
 }
 
@@ -24,10 +23,8 @@ int main()
 {
 	string a,b;
 	cin>>a>>b;
-    auto a1 = stoll(a), a2 = stoll(a.substr(a.find("/") + 1)), b1 = stoll(b), b2 = stoll(b.substr(b.find("/") + 1));
-    auto as = simplification(abs(a1),a2,a1*a2 > 0),bs = simplification(abs(b1),b2,b1*b2 > 0);
-    cout<<as<<" + "<<bs<<" = "<<simplification(abs(a1*b2+a2*b1),a2*b2,(a1*b2+a2*b1)*a2*b2 > 0)<<endl;
-    cout<<as<<" - "<<bs<<" = "<<simplification(abs(a1*b2-a2*b1),a2*b2,(a1*b2-a2*b1)*a2*b2 > 0)<<endl;
-    cout<<as<<" * "<<bs<<" = "<<simplification(abs(a1*b1),a2*b2,a1*b1 > 0)<<endl;
-    cout<<as<<" / "<<bs<<" = "<<(!b1 ? "Inf" : simplification(abs(a1*b2),abs(a2*b1),a1*b1 > 0))<<endl;
+    cout<<simplification(abs(stoll(a)),stoll(a.substr(a.find("/") + 1)),stoll(a)*stoll(a.substr(a.find("/") + 1)) > 0)<<" + "<<simplification(abs(stoll(b)),stoll(b.substr(b.find("/") + 1)),stoll(b)*stoll(b.substr(b.find("/") + 1)) > 0)<<" = "<<simplification(abs(stoll(a)*stoll(b.substr(b.find("/") + 1))+stoll(a.substr(a.find("/") + 1))*stoll(b)),stoll(a.substr(a.find("/") + 1))*stoll(b.substr(b.find("/") + 1)),(stoll(a)*stoll(b.substr(b.find("/") + 1))+stoll(a.substr(a.find("/") + 1))*stoll(b))*stoll(a.substr(a.find("/") + 1))*stoll(b.substr(b.find("/") + 1)) > 0)<<endl;
+    cout<<simplification(abs(stoll(a)),stoll(a.substr(a.find("/") + 1)),stoll(a)*stoll(a.substr(a.find("/") + 1)) > 0)<<" - "<<simplification(abs(stoll(b)),stoll(b.substr(b.find("/") + 1)),stoll(b)*stoll(b.substr(b.find("/") + 1)) > 0)<<" = "<<simplification(abs(stoll(a)*stoll(b.substr(b.find("/") + 1))-stoll(a.substr(a.find("/") + 1))*stoll(b)),stoll(a.substr(a.find("/") + 1))*stoll(b.substr(b.find("/") + 1)),(stoll(a)*stoll(b.substr(b.find("/") + 1))-stoll(a.substr(a.find("/") + 1))*stoll(b))*stoll(a.substr(a.find("/") + 1))*stoll(b.substr(b.find("/") + 1)) > 0)<<endl;
+    cout<<simplification(abs(stoll(a)),stoll(a.substr(a.find("/") + 1)),stoll(a)*stoll(a.substr(a.find("/") + 1)) > 0)<<" * "<<simplification(abs(stoll(b)),stoll(b.substr(b.find("/") + 1)),stoll(b)*stoll(b.substr(b.find("/") + 1)) > 0)<<" = "<<simplification(abs(stoll(a)*stoll(b)),stoll(a.substr(a.find("/") + 1))*stoll(b.substr(b.find("/") + 1)),stoll(a)*stoll(b) > 0)<<endl;
+    cout<<simplification(abs(stoll(a)),stoll(a.substr(a.find("/") + 1)),stoll(a)*stoll(a.substr(a.find("/") + 1)) > 0)<<" / "<<simplification(abs(stoll(b)),stoll(b.substr(b.find("/") + 1)),stoll(b)*stoll(b.substr(b.find("/") + 1)) > 0)<<" = "<<(!stoll(b) ? "Inf" : simplification(abs(stoll(a)*stoll(b.substr(b.find("/") + 1))),abs(stoll(a.substr(a.find("/") + 1))*stoll(b)),stoll(a)*stoll(b) > 0))<<endl;
 }

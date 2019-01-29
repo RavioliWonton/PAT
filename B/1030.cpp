@@ -1,13 +1,18 @@
-//13~16ĞĞĞ´³Émaxi = ((j - i + 1) > maxi ? j - i + 1 : maxi;¾ÍÍ¨¹ı²»ÁË£¬²»ÊÇºÜ¶®.......
+//19è¡Œå†™æˆmaxi = ((j - i + 1) > maxi ? j - i + 1 : maxi;å°±é€šè¿‡ä¸äº†ï¼Œä¸æ˜¯å¾ˆæ‡‚.......
 
 #include <iostream>
+#include <vector>
 #include <algorithm>
 using namespace std;
 
-long Calculate(long long *&s,long &n,long &p)
+int main()
 {
-    long maxi = 0;
-    for(long i = 0;i < n;i++)
+	long n,p,maxi = 0;
+	cin>>n>>p;
+	vector<long long> s(n);
+	for(int i = 0;i < n;i++) cin>>s[i];
+	sort(s.begin(),s.end());
+	for(long i = 0;i < n;i++)
     {
         for(long j = i + maxi;j < n;j++)
         {
@@ -15,16 +20,5 @@ long Calculate(long long *&s,long &n,long &p)
             else break;
         }
     }
-    return maxi;
-}
-
-int main()
-{
-	long n,p;
-	cin>>n>>p;
-	long long (*s) = new long long[n];
-	for(int i = 0;i < n;i++) cin>>s[i];
-	sort(s,s+n);
-    cout<<Calculate(s,n,p)<<endl;
-    delete [] s;
+    cout<<maxi<<endl;
 }

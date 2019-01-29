@@ -4,11 +4,11 @@
 using namespace std;
 int main()
 {
-	string answer,temp;int n,countn;
+	string answer,temp;
+	int n,countn = 0;
 	cin>>answer>>n;
 	cin.clear();
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	countn = 0;
 	for(;(getline(cin,temp)) && (temp != "#");)
 	{
 		countn++;
@@ -21,8 +21,8 @@ int main()
 			}
 			else
 			{
-                		cout<<"Wrong password: "<<temp<<endl;
-                		continue;
+				cout<<"Wrong password: "<<temp<<endl;
+				continue;
 			}
 		}
 		else if(countn == n)
@@ -34,7 +34,7 @@ int main()
 			}
 			else
 			{
-                		cout<<"Wrong password: "<<temp<<endl<<"Account locked"<<endl;
+				cout<<"Wrong password: "<<temp<<"\nAccount locked"<<endl;
 				break;
 			}
 		}

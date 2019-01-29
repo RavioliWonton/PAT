@@ -10,7 +10,7 @@ typedef struct {
 
 int main()
 {
-    int rown,arrayn,threshold;
+    int rown,arrayn,threshold,answer = -1;
     cin>>arrayn>>rown>>threshold;
     vector<pixel> p;
     for(int i = 0; i < arrayn*rown; i++)
@@ -21,7 +21,7 @@ int main()
         if(it != p.end()) (*it).duplication = false;
         p.push_back({value,(it == p.end())});
     }
-    bool flag = true;int answer = -1;
+    bool flag = true;
     auto compare = [&](int a,int b,int threshold)->bool{return (((a > b) ? a : b) - ((a < b) ? a : b) > threshold);};
     for(int i = 0; i < arrayn*rown; i++)
     {
