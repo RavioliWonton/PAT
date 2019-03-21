@@ -11,13 +11,6 @@ typedef struct {
     int error;
 } topic;
 
-struct topicCompare {
-	bool operator() (const topic& a, const topic& b) const {
-		if(a.error != b.error) return a.error > b.error;
-		else return a.number < b.number;
-	}
-};
-
 int main()
 {
     int n,m;
@@ -50,7 +43,11 @@ int main()
         }
         cout<<grade<<endl;
     }
-    set<topic, topicCompare> result(p.begin(),p.end());
+    auto topicCompare = [&](const topic& a, const topic& b)->bool{
+		if(a.error != b.error) return a.error > b.error;
+		else return a.number < b.number;
+	};
+    set<topic, decltype(topicCompare)> result(p.begin(),p.end());
     if(!(*result.begin()).error) cout<<"Too simple"<<endl;
     else
     {

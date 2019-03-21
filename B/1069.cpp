@@ -1,12 +1,12 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 int main()
 {
-    int m,n,s;
+    int m,n,s,countn = 0;
     cin>>m>>n>>s;
     bool flag1 = false;
-    string (*p) = new string[m];
-    int countn = 0;
+    vector<string> p(m);
     for(int i = 1; i <= m; i++)
     {
     	string temp;
@@ -20,7 +20,7 @@ int main()
             if(flag2)
             {
                 s += n;
-		p[countn] = temp;
+		        p[countn] = temp;
                 countn++;
                 cout<<temp<<"\n";
             }
@@ -28,5 +28,4 @@ int main()
         }
     }
     if(!flag1) cout<<"Keep going..."<<endl;
-    delete [] p;
 }

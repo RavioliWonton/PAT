@@ -18,13 +18,6 @@ typedef struct {
 	double overallgrade;
 } student;
 
-struct studentCompare {
-	bool operator() (const student& a, const student& b) const {
-		if(a.overallgrade != b.overallgrade) return a.overallgrade > b.overallgrade;
-		else return a.id < b.id;
-	}
-};
-
 int main()
 {
 	int p,m,n;
@@ -51,7 +44,11 @@ int main()
 		cin>>id>>finalgrade;
 		if(finalgrade >= 0 && finalgrade <= 100) input[id].finalgrade = finalgrade;
 	}
-	set<student, studentCompare> result;
+	auto studentCompare = [&](const student& a, const student& b)->bool{
+		if(a.overallgrade != b.overallgrade) return a.overallgrade > b.overallgrade;
+		else return a.id < b.id;
+	};
+	set<student, decltype(studentCompare)> result;
 	for(auto& it : input)
 	{
 		if((it.second).devgrade >= 200)

@@ -23,26 +23,20 @@ typedef struct {
     char option;
 } wronganswer;
 
-struct wronganswersCompare {
-	bool operator() (const wronganswers& a, const wronganswers& b) const {
-		if(a.countn != b.countn) return a.countn > b.countn;
-		else if(a.sequence != b.sequence) return a.sequence < b.sequence;
-		else return a.option < b.option;
-	}
-};
-
-struct wronganswerCompare {
-	bool operator() (const wronganswer& a, const wronganswer& b) const {
-		if(a.sequence != b.sequence) return a.sequence < b.sequence;
-		else return a.option < b.option;
-	}
-};
-
 int main()
 {
     int n,m;
     cin>>n>>m;
-    map<wronganswer, int, wronganswerCompare> w;
+    auto wronganswerCompare = [&](const wronganswer& a, const wronganswer& b)->bool{
+		if(a.sequence != b.sequence) return a.sequence < b.sequence;
+		else return a.option < b.option;
+	};
+    auto wronganswersCompare = [&](const wronganswers& a, const wronganswers& b)->bool{
+		if(a.countn != b.countn) return a.countn > b.countn;
+		else if(a.sequence != b.sequence) return a.sequence < b.sequence;
+		else return a.option < b.option;
+	};
+    map<wronganswer, int, decltype(wronganswerCompare)> w;
     cout.setf(ios::fixed);
     cout.precision(1);
     for(int i = 0; i < m + n; i++)
@@ -77,7 +71,7 @@ int main()
         }
         cout<<grade<<"\n";
     }
-    set<wronganswers, wronganswersCompare> result;
+    set<wronganswers, decltype(wronganswersCompare)> result;
     for_each(w.begin(),w.end(),[&](auto a)->void{result.insert({a.second, a.first.sequence, a.first.option});});
     if(result.size())
     {
