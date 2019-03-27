@@ -57,7 +57,7 @@ void Find(const int& N,const vector<int>& p,vector<bool>& q,const int& r,const v
 
 int main()
 {
-	int N,M;int r;
+	int N,M,r;
 	scanf("%d",&N);
     vector<int> p(N);
     for(int i = 0;i < N;i++) scanf("%d",&p[i]);

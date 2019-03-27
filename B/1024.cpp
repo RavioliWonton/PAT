@@ -52,6 +52,6 @@ int main()
             base.push_front('0');
         }
     }
-    for(deque<char>::iterator i = base.begin(); i != base.end(); i++) cout<<*i;
+    for(auto i = base.begin(); i != base.end(); i++) cout<<*i;
     cout<<endl;
 }

@@ -4,9 +4,9 @@ using namespace std;
 
 int main()
 {
-	string dividend;int divisor;
+	string dividend,quotient = "";
+    int divisor,remainder = 0;
 	cin>>dividend>>divisor;
-	string quotient = "";int remainder = 0;
 	if(dividend.size() == 1)
     {
         quotient = to_string(stoi(dividend) / divisor);
@@ -14,10 +14,10 @@ int main()
     }
 	else
 	{
-        for(int i = 0;i < dividend.size();i++)
+        for(auto it = dividend.begin();it != dividend.end();it++)
         {
             remainder *= 10;
-            remainder += stoi(dividend.substr(i,1));
+            remainder += stoi(dividend.substr(distance(dividend.begin(),it),1));
             if(remainder / divisor)
             {
                 quotient.append(to_string(remainder / divisor));

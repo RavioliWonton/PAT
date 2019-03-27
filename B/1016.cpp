@@ -1,30 +1,20 @@
 #include <iostream>
-#include <string>
+#include <algorithm>
 #include <cmath>
 using namespace std;
 
-char itoc(int i)
-{
-    return (char)(i+48);
-}
-
 int CalculateP(string a,int da)
 {
-    int s,p;
-    s = p = 0;
-    for(int i = 0; i < a.length(); i++)
-        if(a[i] == itoc(da)) s++;
-    for(; s>0; s--)
-        p += pow((double)10,s-1)*da;
+    auto itoc = [&](int i)->char{return i + '0';};
+    int s = count(a.begin(),a.end(),itoc(da)),p = 0;
+    for(; s>0; s--) p += pow((double)10,s-1)*da;
     return p;
 }
 
 int main()
 {
     string a,b;
-    int da,db,pa,pb;
+    int da,db;
     cin>>a>>da>>b>>db;
-    pa = CalculateP(a,da);
-    pb = CalculateP(b,db);
-    cout<<pa+pb<<endl;
+    cout<<CalculateP(a,da)+CalculateP(b,db)<<endl;
 }

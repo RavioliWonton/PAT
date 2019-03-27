@@ -1,20 +1,19 @@
 #include <iostream>
-#include <string>
+#include <vector>
 using namespace std;
 
-int stoi(char c) {return (int)(c - 48);}
+auto ctoi = [&](char a)->int{return a - '0';};
 
-int calculateVerification(string a)
+const int calculateVerification(const string& a)
 {
-    int sum = 0;int p[] = {7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2};int m[] = {1,0,10,9,8,7,6,5,4,3,2};
-    for(int i = 0;i < a.length() - 1;i++)
+    int sum = 0;
+    vector<int> p {7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2}, m {1,0,10,9,8,7,6,5,4,3,2};
+    for(auto it = next(a.rbegin());it != a.rend();it++)
     {
-        if(stoi(a[i]) >= 0 && stoi(a[i]) <= 9)
-            sum += p[i]*stoi(a[i]);
+        if(isdigit(*it)) sum += (*next(p.rbegin(),distance(a.rbegin(),it) - 1))*ctoi(*it);
         else return -1;
     }
-    sum %= 11;
-    return m[sum];
+    return *next(m.begin(), sum % 11);
 }
 
 int main()
@@ -26,9 +25,8 @@ int main()
     {
         string a;
         cin>>a;
-        if(calculateVerification(a) == 10)
-        {if(calculateVerification(a) == -1 || a[a.length() - 1] != 'X') {cout<<a<<endl;flag = false;}}
-        else if((calculateVerification(a) != stoi(a[a.length() - 1])) || calculateVerification(a) == -1) {cout<<a<<endl;flag = false;}
+        if(a.back() == 'X' && calculateVerification(a) != 10) {cout<<a<<endl;flag = false;}
+        else if(a.back() != 'X' && calculateVerification(a) != ctoi(a.back())) {cout<<a<<endl;flag = false;}
     }
     if(flag) cout<<"All passed"<<endl;
 }

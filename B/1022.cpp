@@ -1,5 +1,4 @@
 #include <iostream>
-#include <sstream>
 using namespace std;
 int main()
 {
@@ -10,14 +9,9 @@ int main()
     else
     {
         string s = "";
-        stringstream ss;
         for(;c>0;)
         {
-            string temp = "";
-            ss << c%d;
-            ss >> temp;
-            ss.clear();
-            ss.str("");
+            string temp = to_string(c%d);
             temp += s;
             s = temp;
             c /= d;

@@ -12,8 +12,8 @@ bool Judge(char a,int i)
     switch(i)
     {
         case 1:{if(a >= 'A' && a <= 'G'){return true;}else return false;}break;
-        case 2:{if((a >= 'A' && a <= 'N') || (a >= '0' && a <= '9')){return true;}else return false;}break;
-        case 3:{if((a >= 'A' && a <= 'Z') || (a >= 'a' && a <= 'z')){return true;}else return false;}break;
+        case 2:{if((a >= 'A' && a <= 'N') || isdigit(a)){return true;}else return false;}break;
+        case 3:{if(isalpha(a)){return true;}else return false;}break;
     }
 }
 
@@ -33,7 +33,7 @@ void printDays(char c)
 
 void printHour(char c)
 {
-    if(c >= '0' && c <= '9') cout<<"0"<<c<<":";
+    if(isdigit(c)) cout<<"0"<<c<<":";
     else if(c >= 'A' && c <= 'N') cout<<(int)(c - 'A' + 10)<<":";
 }
 

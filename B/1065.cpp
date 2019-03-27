@@ -8,8 +8,9 @@ using namespace std;
 
 int main()
 {
-    int couple[100000],n;
+    int n;
     cin>>n;
+    vector<int> couple(100000);
     for(int i = 0;i < n;i++)
     {
         int bride,bridegroom;
@@ -26,7 +27,7 @@ int main()
         cin>>participant;
         people.push_back(participant);
     }
-    for(vector<int>::iterator it = people.begin();it != people.end();it++)
+    for(auto it = people.begin();it != people.end();it++)
     {
         if(find(people.begin(),people.end(),couple[*it]) == people.end())
             dog.push_back(*it);
@@ -36,7 +37,7 @@ int main()
     {
         sort(dog.begin(),dog.end());
         cout<<setfill('0')<<setw(5)<<dog.front();
-        for(vector<int>::iterator it = dog.begin() + 1;it != dog.end();it++) cout<<" "<<setfill('0')<<setw(5)<<*it;
+        for(auto& people : dog) cout<<" "<<setfill('0')<<setw(5)<<people;
         cout<<endl;
     }
 }

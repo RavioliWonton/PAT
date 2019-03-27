@@ -31,15 +31,13 @@ void inputOperand(list<int>& l)
 
 int main()
 {
-    list<int> n,n1,n2;
-    list<int> result;
+    list<int> n,n1,n2,result;
     inputScalenumber(n);
     inputOperand(n1);
     inputOperand(n2);
-    int maxsize = max(n1.size(),n2.size());
+    int maxsize = max(n1.size(),n2.size()),carry = 0;
     for(;maxsize - n1.size() > 0;) n1.push_front(0);
     for(;maxsize - n2.size() > 0;) n2.push_front(0);
-    int carry = 0;
     for(int i = 0;i < maxsize;i++)
     {
         int sum = *(next(n1.rbegin(),i)) + *(next(n2.rbegin(),i)) + carry;

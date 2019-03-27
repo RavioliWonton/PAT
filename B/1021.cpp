@@ -1,24 +1,21 @@
 #include <iostream>
 #include <string>
-#include <cstring>
+#include <vector>
 using namespace std;
 
-int judge(char c)
+auto judge = [&](char c)->int
 {
-    if(c >= '0' && c<= '9') return c-48;
+    if(isdigit(c)) return c-'0';
     else return -1;
-}
+};
 
 int main()
 {
 	string a;
 	cin>>a;
-    int (*p) = new int[10];memset(p,0,sizeof(int)*10);
-    for(int i = 0;i < a.length();i++)
-        if(judge(a[i]) != -1)
-            p[judge(a[i])]++;
-    for(int i = 0;i < 10;i++)
-        if(p[i])
-            cout<<i<<":"<<p[i]<<endl;
-    delete [] p;
+    vector<int> p(10,0);
+    for(auto& c : a)
+        if(judge(c) != -1) p[judge(c)]++;
+    for(auto it = p.begin();it != p.end();it++)
+        if(*it) cout<<distance(p.begin(),it)<<":"<<*it<<endl;
 }

@@ -20,3 +20,7 @@ LLVM Clang 7.0.0 trunk r333363
 > *参数为g++ -DONLINE_JUDGE -fno-tree-ch -O2 -Wall -std=c++14 -pipe $src -lm -o $exe*
 >
 > *和clang++ -DONLINE_JUDGE -O2 -Wall -std=c++14 -pipe $src -lm -o $exe*
+
+## 仍有问题题号
+
+B级：1073，1078，1084，1089，1090，1095
